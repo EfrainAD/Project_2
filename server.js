@@ -6,6 +6,7 @@ const express = require('express')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
 const mainRoutes = require('./controller/main_routes')
+const usersRoutes = require('./controller/user_routes')
 
 ////////////////////////////////////////////
 // Create our express application object
@@ -42,10 +43,11 @@ app.use(
 // Routes
 ////////////////////////////////////////////
 app.use('/main', mainRoutes)
+app.use('/user', usersRoutes)
 
 // localhost:8000/
 app.get('/', (req, res) => {
-	res.send('your server is running, better go catch it')
+	res.send('your server is running, better go catch it <a href="/main">Go to Home Page</a>')
 	// res.redirect('/go')
 })
 

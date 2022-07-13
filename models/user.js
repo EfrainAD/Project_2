@@ -22,7 +22,7 @@ const userSchema = new Schema({
         required: true
     },
     personalTracker: {
-          type: Schema.types.ObjectId,
+          type: Schema.Types.ObjectId,
           ref: "Tracker"
     }
 })
