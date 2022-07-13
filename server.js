@@ -1,13 +1,11 @@
 /////////////////////////////////
 // import dependencies
 /////////////////////////////////
-// this allows us to load our env variables
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const methodOverride = require('method-override')
 const mainRoutes = require('./controller/main_routes')
-const userRoutes = require('./controller/user_routes')
 
 ////////////////////////////////////////////
 // Create our express application object
@@ -43,8 +41,7 @@ app.use(
 ////////////////////////////////////////////
 // Routes
 ////////////////////////////////////////////
-// app.use('/go', mainRoutes)
-// app.use('/users', userRoutes)
+app.use('/main', mainRoutes)
 
 // localhost:8000/
 app.get('/', (req, res) => {
