@@ -18,9 +18,32 @@ router.delete('delete/:id', (req, res) => {
 // GET - Index
 // localhost:8000/collection
 router.get('/', (req, res) => {
-    Collection.find({})
+    Collection.find({public: true})
         .then(collection => {
-            res.render('main/index', { collection })
+            res.render('collection/index', { collection })
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
+// GET - Show
+// localhost:3000/fruits/:id <- change with the id being passed in
+router.get('/:id', (req, res) => {
+    const collectionId = req.params.id
+
+    Collection.findById(collectionId)
+    // populate our User models fields
+    // comment has an author field and that is the ref to the User model
+    // always going to be a string of the value you want to populate
+    // this also has to be anohter model 
+        // .populate('puzzle') UNDOOOO
+        // send back some json
+        .then(collection => {
+            // res.json(collection)
+            const userId = req.session.userId
+            const username = req.session.username
+            res.render('collection/show', { collection, userId, username })
         })
         .catch(err => {
             res.json(err)
@@ -32,15 +55,14 @@ router.get('/new', (req, res) => {
     console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
     const username = req.session.username
     const loggedIn = req.session.loggedIn
-    res.render('main/new', { username, loggedIn })
+    res.render('collection/new', { username, loggedIn })
 })
-
 // POST - Create
 router.post('/', (req, res) => {
-    req.body.public = req.body.public === 'on'
-
+    
     req.body.owner = req.session.userId
-
+    req.body.public = req.body.public === 'on'
+    
     console.log(req.body)
     Collection.create(req.body)
         .then(collection => {
