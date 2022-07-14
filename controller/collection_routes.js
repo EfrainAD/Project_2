@@ -3,12 +3,12 @@ const router = express.Router()
 const Collection = require('../models/collection')
 
 // DELETE - Delete
-router.delete('delete/:id', (req, res) => {
+router.delete('/delete/:id', (req, res) => {
     const collectionId = req.params.id
 
     Collection.findByIdAndRemove(collectionId)
         .then(collection => {
-            res.redirect('/')
+            res.redirect('/collection')
         })
         .catch(err => {
             res.json(err)
@@ -25,6 +25,14 @@ router.get('/', (req, res) => {
         .catch(err => {
             res.json(err)
         })
+})
+
+// GET route for displaying my form for create
+router.get('/new', (req, res) => {
+    console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
+    const username = req.session.username
+    const loggedIn = req.session.loggedIn
+    res.render('collection/new', { username, loggedIn }) 
 })
 
 // GET - Show
@@ -50,13 +58,6 @@ router.get('/:id', (req, res) => {
         })
 })
 
-// GET route for displaying my form for create
-router.get('/new', (req, res) => {
-    console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
-    const username = req.session.username
-    const loggedIn = req.session.loggedIn
-    res.render('collection/new', { username, loggedIn })
-})
 // POST - Create
 router.post('/', (req, res) => {
     
