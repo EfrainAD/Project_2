@@ -1,33 +1,35 @@
 {% layout 'layout.liquid' %} {% block content %}
 
-{% if loggedIn == false %}
-     <p>You need to be signed in, to add a new collection. <a href="/user/singin"></a></p>
-{% else %}
+{% if loggedIn == true %}
 <div class="container-md">
+     <h1>This says {{loggedIn}}</h1>
      <form action="/collection" method="POST">
-         <fieldset>
-             <legend>Create A New collection</legend>
-             <label class="form-label">Name:</label>
-             <input 
-                 class="form-control" 
-                 type="text" 
-                 name="name" 
-                 placeholder="enter name"
-             >
-             <label class="form-label">public?</label>
-             <input 
-                 class="form-check-input" 
-                 type="checkbox" 
-                 name="public"
-             >
-         </fieldset>
-         <input 
-             type="submit" 
-             value="Create New Collection" 
-             class="btn btn-success"
-         >
+          <fieldset>
+               <legend>Create A New collection</legend>
+               <label class="form-label">Name:</label>
+               <input 
+               class="form-control" 
+               type="text" 
+               name="name" 
+               placeholder="enter name"
+               >
+               <label class="form-label">public?</label>
+               <input 
+               class="form-check-input" 
+               type="checkbox" 
+               name="public"
+               >
+          </fieldset>
+          <input 
+          type="submit" 
+          value="Create New Collection" 
+          class="btn btn-success"
+          >
      </form>
- </div>
-      
+</div>
+
+{% else %}
+<p>You need to be signed in, to add a new collection. <a href="/user/singin"></a></p>
 {% endif %}
+
 {% endblock %}

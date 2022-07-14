@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
 
 // GET route for displaying my form for create
 router.get('/new', (req, res) => {
+    console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
     const username = req.session.username
     const loggedIn = req.session.loggedIn
     res.render('main/new', { username, loggedIn })

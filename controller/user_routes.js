@@ -106,7 +106,7 @@ router.get('/logout', (req, res) => {
         console.log('this is returned from req.session.destroy', ret)
         console.log('session has been destroyed')
         console.log(req.session)
-        res.redirect('/')
+        res.redirect('/main')
     })
 })
 
