@@ -111,42 +111,18 @@ router.get('/logout', (req, res) => {
     })
 })
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     const userId = req.session.userId
-    const user = null
-    res.render('user/home', { user })
-
-    User.findById( userId )
-        // .then(userq=>{
-        //     // user = userq
-        // })
-        .then(userq => {
-            Collection.find({owner: userq})
-                .then( collect => {
-                    res.render('user/home', {userq, collect})
-                })
+    const user = await User.findById( userId )
+    
+    Collection.find({owner: user})
+        .then(collection => {
+            res.render('user/home', { user, collection})
         })
-
-
-        // .then(user => {
-        //     console.log('user.name  '+user.username)
-        //     res.render('user/home', { user })
-        // })
-        // .catch(error => {
-        //             console.log(error)
-        //             res.json({ error })
-        //         })    
-    // console.log('userId '+userId)
-    // console.log('user '+user)
-    // res.render('user/home', { user })
-    // Collection.find({owner: user})
-    //     .then(collection => {
-    //         res.render('user/home', { user, collection})
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //         res.json({ error })
-    //     })    
+        .catch(error => {
+            console.log(error)
+            res.json({ error })
+        })    
 })
 
 ///////////////////////////////////////
