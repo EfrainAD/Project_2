@@ -27,4 +27,29 @@ router.get('/', (req, res) => {
         })
 })
 
+// GET route for displaying my form for create
+router.get('/new', (req, res) => {
+    const username = req.session.username
+    const loggedIn = req.session.loggedIn
+    res.render('main/new', { username, loggedIn })
+})
+
+// POST - Create
+router.post('/', (req, res) => {
+    req.body.public = req.body.public === 'on'
+
+    req.body.owner = req.session.userId
+
+    console.log(req.body)
+    Collection.create(req.body)
+        .then(collection => {
+            console.log(collection)
+            // res.json(fruit)
+            res.redirect('/collection')
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
 module.exports = router

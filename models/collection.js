@@ -5,8 +5,12 @@ const { Schema, model } = mongoose
 const collectionSchema = new Schema(
 	{
 		owner: {
-               type: Schema.Types.ObjectId, 
+               type: Schema.Types.ObjectId,
 			ref: 'User', 
+               required: true
+          },
+          name: {
+               type: String,
                required: true
           },
           public: {
