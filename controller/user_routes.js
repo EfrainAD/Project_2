@@ -3,6 +3,7 @@
 ///////////////////////////////////////
 const express = require('express')
 const User = require('../models/user')
+const Collection = require('../models/collection')
 // bcrypt is used to hash(read: encrypt) passwords
 const bcrypt = require('bcryptjs')
 
@@ -108,6 +109,44 @@ router.get('/logout', (req, res) => {
         console.log(req.session)
         res.redirect('/main')
     })
+})
+
+router.get('/', (req, res) => {
+    const userId = req.session.userId
+    const user = null
+    res.render('user/home', { user })
+
+    User.findById( userId )
+        // .then(userq=>{
+        //     // user = userq
+        // })
+        .then(userq => {
+            Collection.find({owner: userq})
+                .then( collect => {
+                    res.render('user/home', {userq, collect})
+                })
+        })
+
+
+        // .then(user => {
+        //     console.log('user.name  '+user.username)
+        //     res.render('user/home', { user })
+        // })
+        // .catch(error => {
+        //             console.log(error)
+        //             res.json({ error })
+        //         })    
+    // console.log('userId '+userId)
+    // console.log('user '+user)
+    // res.render('user/home', { user })
+    // Collection.find({owner: user})
+    //     .then(collection => {
+    //         res.render('user/home', { user, collection})
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //         res.json({ error })
+    //     })    
 })
 
 ///////////////////////////////////////

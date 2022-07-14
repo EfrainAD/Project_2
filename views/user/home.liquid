@@ -1,0 +1,22 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+
+<h1>User: {{user.username}}</h1>
+
+<h2>Your Collection</h2>
+
+<p><a href="/collection/new"><button>Add New Collection</button></a></p>
+    {% if collection.length == 0 %}
+        <p>There are no collections yet. Please add some.</p>
+    {% else %}
+        {% for collection in collection %}
+            <p><a href="/collection/{{collection.id}}">{{collection.name}}</a></p>
+        {% endfor %}
+    {% endif %}
+
+<h2></h2>
+<p>{{user.personalTracker}}</p>
+
+
+{% endblock %}
+
