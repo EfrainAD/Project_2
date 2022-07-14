@@ -35,6 +35,19 @@ router.get('/new', (req, res) => {
     res.render('collection/new', { username, loggedIn }) 
 })
 
+// GET route for displaying an update form
+router.get('/:id/edit', (req, res) => {
+    const collectionId = req.params.id
+
+    Collection.findById(collectionId)
+        .then(collection => {
+            res.render('collection/edit', { collection })
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
 // GET - Show
 // localhost:3000/fruits/:id <- change with the id being passed in
 router.get('/:id', (req, res) => {
@@ -70,6 +83,22 @@ router.post('/', (req, res) => {
             console.log(collection)
             // res.json(fruit)
             res.redirect('/collection')
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
+
+// PUT - Update //NOT PAGE
+// localhost:3000/fruits/:id
+router.put('/:id', (req, res) => {
+    const collectionId = req.params.id
+
+    req.body.public = req.body.public === 'on'
+
+    Collection.findByIdAndUpdate(collectionId, req.body, { new: true })
+        .then(collection => {
+            res.redirect(`/collection/${collection._id}`)
         })
         .catch(err => {
             res.json(err)
