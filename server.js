@@ -7,6 +7,7 @@ const morgan = require('morgan')
 const methodOverride = require('method-override')
 const mainRoutes = require('./controller/main_routes')
 const usersRoutes = require('./controller/user_routes')
+const collectionRoutes = require('./controller/collection_routes')
 
 ////////////////////////////////////////////
 // Create our express application object
@@ -44,6 +45,7 @@ app.use(
 ////////////////////////////////////////////
 app.use('/main', mainRoutes)
 app.use('/user', usersRoutes)
+app.use('/collection', collectionRoutes)
 
 // localhost:8000/
 app.get('/', (req, res) => {

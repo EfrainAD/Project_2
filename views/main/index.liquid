@@ -1,4 +1,13 @@
 {% layout 'layout.liquid'%}
 {% block content %}
-    <h1>This is for my list of collections!</h1>
+    <h1>Collections!</h1>
+
+    {% if collection.length == 0 %}
+        <p>There are no collections yet. Please add some.</p>
+    {% else %}
+        {% for collection in collection %}
+            <p>{{collection.name}}</p>
+        {% endfor %}
+    {% endif %}
+
 {% endblock %}

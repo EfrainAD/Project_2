@@ -79,7 +79,7 @@ router.post('/login', async (req, res) => {
                     req.session.userId = user._id
                     // redirect to the '/fruits' page
                     console.log('this is the session after login', req.session)
-                    res.redirect('/fruits')
+                    res.redirect('/main')
                 } else {
                     // otherwise(pw incorrect) send an error message
                     // for now just send some json error
