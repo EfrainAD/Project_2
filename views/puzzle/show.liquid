@@ -12,12 +12,12 @@
                 {% endif %}
             </h3>
             {% for collection in puzzle.collections %}
-               <h4>Collection: <a href="/collection/{{collection}}">{{collection.name}}</a></h4>
+               <h4>Collection: <a href="/collection/{{collection.id}}">{{collection.name}}</a></h4>
             {% endfor %}
             <h1>How many collections {{puzzle.collection.length}}</h1>
             {% if puzzle.collection.length == 0 %}
                <p>
-                    This collection has no collections in it. THIS SHOULD NOT BE RIGHT. 
+                    This problem has no collections in it. THIS SHOULD NOT BE RIGHT. 
                 </p>
             {% else %}
                 <a href="">{{puzzle}}</a>
