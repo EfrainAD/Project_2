@@ -1,0 +1,13 @@
+{% layout 'layout.liquid'%}
+{% block content %}
+    <h1>Problems!</h1>
+
+    {% if puzzle.length == 0 %}
+        <p>There are no collections yet. Please add some.</p>
+    {% else %}
+        {% for puzzle in puzzle %}
+            <p><a href="/puzzle/{{puzzle.id}}">{{puzzle}}</a></p>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

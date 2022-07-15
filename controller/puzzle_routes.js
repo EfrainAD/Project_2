@@ -16,6 +16,32 @@ const Collection = require('../models/collection')
 //         })
 // })
 
+router.get('/index', (req, res) => {
+    Puzzle.find({})
+        .then(puzzle => {
+            res.render('puzzle/tempIndex', {puzzle})
+        })
+        .catch(console.error)
+})
+//Page: One Problem to look at.
+router.get('/:puzzleId', (req, res) => {
+    const puzzleId = req.params.puzzleId
+    Puzzle.findById(puzzleId)
+    .populate('owner','username')
+    .populate('collections','name')
+    .then(puzzle => {
+        if ((puzzle.public === true) || (puzzle.owner.id == req.session.userId) )  {
+            console.log('This is req.session: ',req.session)
+            console.log('This is req.session.userId: ',req.session.userId)
+            console.log('This is puzzle.ownser.id: ',puzzle.owner.id)
+            res.render('puzzle/show', {puzzle})
+        }
+        else {
+            res.render('user/accessDenied')
+        }
+    })
+})
+
 // GET
 router.get('/:collectionId/new', (req, res) => {
     console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
@@ -25,7 +51,7 @@ router.get('/:collectionId/new', (req, res) => {
     res.render('puzzle/new', { username, loggedIn, collectionId }) 
 })
 
-// POST - Create
+// POST - Create //Need to note this.
 router.post('/', (req, res) => {
     // console.log('HI')
     const collectionId = req.body.collections
@@ -37,11 +63,10 @@ router.post('/', (req, res) => {
     console.log('res.body: ', req.body)
     Puzzle.create(req.body)
         .then(puzzle => {
-                console.log('Puzzle object created: '+puzzle)
-                console.log('returned puzzle in the next .then ', puzzle )
+                console.log('Puzzle object created: ',puzzle)
                 Collection.findById(collectionId)
                     .then(collection => {
-                        collection.puzzle.push(puzzle._id)
+                        collection.puzzle = (puzzle._id) //Doesn't seem care if I did the push. need test.
                         console.log('collection that puzzle should be added to ', collection)
                         res.redirect(`/collection/${collectionId}`)
                     })

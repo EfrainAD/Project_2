@@ -53,20 +53,17 @@ router.get('/:id/edit', (req, res) => {
 // localhost:3000/fruits/:id <- change with the id being passed in
 router.get('/:id', async (req, res) => {
     const collectionId = req.params.id
-    // const puzzleInCol = await Puzzle.find({collections: collectionId})
+    const puzzle = await Puzzle.find({collections: collectionId})
 
     Collection.findById(collectionId)
-    // populate our User models fields
-    // comment has an author field and that is the ref to the User model
-    // always going to be a string of the value you want to populate
-    // this also has to be anohter model 
-        // .populate('puzzle') UNDOOOO
+        // .populate('puzzle') //Not owrk Why????
+        .populate('owner', 'username')
         // send back some json
         .then(collection => {
             // res.json(collection)
             const userId = req.session.userId
             const username = req.session.username
-            res.render('collection/show', { collection, userId, username})
+            res.render('collection/show', { collection, puzzle, userId, username})
         })
         .catch(err => {
             res.json(err)

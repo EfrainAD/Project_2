@@ -19,7 +19,7 @@ const collectionSchema = new Schema(
           },
           puzzle: [{ //DEBUG NOTE: Not sure if ref need be Puzzle.
                type: Schema.Types.ObjectId, 
-               ref: 'Puzzle', 
+               ref: 'Puzzle'
           }]
 	},
 	{
