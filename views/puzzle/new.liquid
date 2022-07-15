@@ -2,14 +2,14 @@
 
 {% if loggedIn == true %}
 <div class="container-md">
-     <form action="/collection" method="POST">
+     <form action="/puzzle" method="POST">
           <fieldset>
-               <legend>Create A New collection</legend>
-               <label class="form-label">Name:</label>
+               <legend>Create A New Problem</legend>
+               <label class="form-label">Question:</label>
                <input 
                class="form-control" 
                type="text" 
-               name="name" 
+               name="problem" 
                placeholder="enter name"
                >
                <label class="form-label">public?</label>
@@ -17,6 +17,13 @@
                class="form-check-input" 
                type="checkbox" 
                name="public"
+               >
+               <input 
+               class="form-control" 
+               type="text" 
+               name="collection" 
+               placeholder="enter name"
+               value="{{collectionId}}"
                >
           </fieldset>
           <input 

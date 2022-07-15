@@ -4,6 +4,7 @@
 const express = require('express')
 const User = require('../models/user')
 const Collection = require('../models/collection')
+const Puzzle = require('../models/personal-tracker')
 // bcrypt is used to hash(read: encrypt) passwords
 const bcrypt = require('bcryptjs')
 
@@ -114,9 +115,10 @@ router.get('/logout', (req, res) => {
 router.get('/', async (req, res) => {
     const userId = req.session.userId
     const user = await User.findById( userId )
+    const puzzle = await Puzzle.find({owner: user})
     
     Collection.find({owner: user})
-        .then(collection => {
+        .then (collection => {
             res.render('user/home', { user, collection})
         })
         .catch(error => {

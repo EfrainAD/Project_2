@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Collection = require('../models/collection')
+const Puzzle = require('../models/puzzle')
 
 // DELETE - Delete
 router.delete('/delete/:id', (req, res) => {
@@ -50,8 +51,9 @@ router.get('/:id/edit', (req, res) => {
 
 // GET - Show
 // localhost:3000/fruits/:id <- change with the id being passed in
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     const collectionId = req.params.id
+    // const puzzleInCol = await Puzzle.find({collections: collectionId})
 
     Collection.findById(collectionId)
     // populate our User models fields
@@ -64,7 +66,7 @@ router.get('/:id', (req, res) => {
             // res.json(collection)
             const userId = req.session.userId
             const username = req.session.username
-            res.render('collection/show', { collection, userId, username })
+            res.render('collection/show', { collection, userId, username})
         })
         .catch(err => {
             res.json(err)

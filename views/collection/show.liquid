@@ -13,10 +13,16 @@
             {% for problem in collection.puzzle %}
                <h4><a href="">Problem: {{problem}}</a></h4>
             {% endfor %}
+            <h1>How many problems {{collection.puzzle.length}}</h1>
             {% if collection.puzzle.length == 0 %}
-               <p>This collection has no problems in it.</p>
+               <p>
+                    This collection has no problems in it. 
+                    <a href="/puzzle/{{collection._id}}/new">Add a Problem</a>
+                </p>
+            {% else %}
+                <a href="">{{collection.puzzleInCol.problem}}</a>
             {% endif %}
-            
+                
             <div class="btn-group">
                 <a href="/collection/{{collection._id}}/edit" class="btn btn-primary">Edit Collection</a>
                 <form action="/collection/delete/{{collection._id}}?_method=DELETE" method="POST">

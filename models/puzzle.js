@@ -5,20 +5,20 @@ const { Schema, model } = mongoose
 const puzzleSchema = new Schema(
 	{
 		owner: {
-               type: Schema.Types.ObjectId, 
+               type: Schema.Types.ObjectId,
 			ref: 'User', 
                required: true
           },
-          collection: [{
+          collections: [{
                type: Schema.Types.ObjectId, 
-			ref: 'Collection', 
-               default: 'none'
+			ref: 'Collection'
+               // default: 'none'
           }],
           public: {
                type: Boolean,
                default: false
           },
-          //This is the object
+          // //This is the object
           problem: {
                type: String,
                required: true
