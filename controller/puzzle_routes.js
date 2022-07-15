@@ -34,21 +34,19 @@ router.post('/', (req, res) => {
     req.body.owner = req.session.userId
     req.body.public = req.body.public === 'on'
     
-    console.log('res.body: '+JSON.stringify(req.body))
+    console.log('res.body: ', req.body)
     Puzzle.create(req.body)
         .then(puzzle => {
                 console.log('Puzzle object created: '+puzzle)
-                .then(puzzle => {
-                    console.log('returned puzzle in the next .then '+puzzle )
-                    Collection.findById(collectionId)
-                        .then(collection => {
-                            collection.puzzle = puzzle
-                            console.log('collection that puzzle should be added to '+collection)
-                            res.redirect(`/collection/${req.body.collection}`)
-                        })
-                        .catch(err => res.send(err))
-        })
+                console.log('returned puzzle in the next .then ', puzzle )
+                Collection.findById(collectionId)
+                    .then(collection => {
+                        collection.puzzle.push(puzzle._id)
+                        console.log('collection that puzzle should be added to ', collection)
+                        res.redirect(`/collection/${collectionId}`)
+                    })
         .catch(err => res.send(err))
+        
     })
     .catch(err => res.send(err))
 })
