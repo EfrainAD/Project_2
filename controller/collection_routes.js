@@ -9,6 +9,7 @@ router.delete('/delete/:id', (req, res) => {
     const userId = req.session.userId
 
     Collection.findById(collectionId)
+    .populate('owner')
     .then(collection => {
         if (collection.owner.id == userId) {
             collection.remove()
