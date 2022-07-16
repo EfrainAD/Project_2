@@ -4,17 +4,17 @@ const Puzzle = require('../models/puzzle')
 const Collection = require('../models/collection')
 
 // DELETE - Delete
-// router.delete('/delete/:id', (req, res) => {
-//     const PuzzleId = req.params.id
+router.delete('/delete/:id', (req, res) => {
+    const PuzzleId = req.params.id
 
-//     Puzzle.findByIdAndRemove(PuzzleId)
-//         .then(puzzle => {
-//             res.redirect('user')
-//         })
-//         .catch(err => {
-//             res.json(err)
-//         })
-// })
+    Puzzle.findByIdAndRemove(PuzzleId)
+        .then(puzzle => {
+            res.redirect('/collections')
+        })
+        .catch(err => {
+            res.json(err)
+        })
+})
 
 router.get('/index', (req, res) => {
     Puzzle.find({})

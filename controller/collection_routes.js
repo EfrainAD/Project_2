@@ -6,14 +6,19 @@ const Puzzle = require('../models/puzzle')
 // DELETE - Delete
 router.delete('/delete/:id', (req, res) => {
     const collectionId = req.params.id
+    const userId = req.session.userId
 
-    Collection.findByIdAndRemove(collectionId)
-        .then(collection => {
+    Collection.findById(collectionId)
+    .then(collection => {
+        if (collection.owner.id == userId) {
+            collection.remove()
             res.redirect('/collection')
-        })
-        .catch(err => {
-            res.json(err)
-        })
+        } else {
+            res.render('user/accessDenied')}
+    })
+    .catch(err => {
+        res.json(err)
+    })
 })
 
 // GET - Index
