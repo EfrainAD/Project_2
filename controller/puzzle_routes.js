@@ -33,7 +33,7 @@ router.get('/:puzzleId', (req, res) => {
         if ((puzzle.public === true) || (puzzle.owner.id == req.session.userId) )  {
             console.log('This is req.session: ',req.session)
             console.log('This is req.session.userId: ',req.session.userId)
-            console.log('This is puzzle.ownser.id: ',puzzle.owner.id)
+            console.log('This is puzzle.owner.id: ',puzzle.owner.id)
             res.render('puzzle/show', {puzzle})
         }
         else {

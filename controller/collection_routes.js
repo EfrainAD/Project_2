@@ -57,13 +57,25 @@ router.get('/:id', async (req, res) => {
 
     Collection.findById(collectionId)
         // .populate('puzzle') //Not owrk Why????
-        .populate('owner', 'username')
+        .populate('owner','username')
         // send back some json
         .then(collection => {
             // res.json(collection)
+
             const userId = req.session.userId
             const username = req.session.username
-            res.render('collection/show', { collection, puzzle, userId, username})
+
+            if ((collection.public === true) || (collection.owner.id == userId) )  {
+                console.log('This is req.session: ', req.session)
+                console.log('This is userId: ', userId)
+                console.log('This is collection.owner.id: ', collection.owner.id)
+                res.render('collection/show', { collection, puzzle, userId, username})
+            }
+            else {
+                res.render('user/accessDenied')
+            }
+
+            
         })
         .catch(err => {
             res.json(err)
