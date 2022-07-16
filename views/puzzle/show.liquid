@@ -24,7 +24,7 @@
             {% endif %}
                 
             <div class="btn-group">
-                <a href="/" class="btn btn-primary">Edit </a>
+                <a href="/puzzle/{{puzzle.id}}/edit" class="btn btn-primary">Edit </a>
                 <form action="/collection/delete/?_method=DELETE" method="POST">
                     <input type="submit" value="Delete" class="btn btn-danger">
                 </form>

@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Puzzle = require('../models/puzzle')
 const Collection = require('../models/collection')
+const { route } = require('./collection_routes')
 
 // DELETE - Delete
 router.delete('/delete/:id', (req, res) => {
@@ -16,6 +17,7 @@ router.delete('/delete/:id', (req, res) => {
         })
 })
 
+//Temp show all problems on DB
 router.get('/index', (req, res) => {
     Puzzle.find({})
         .then(puzzle => {
@@ -23,6 +25,29 @@ router.get('/index', (req, res) => {
         })
         .catch(console.error)
 })
+
+//Page: Edit forum
+router.get('/:puzzleId/edit', (req, res) => {
+    const puzzleId = req.params.puzzleId
+    const ownerId = req.session.userId
+
+    Puzzle.findById(puzzleId)
+    .populate('owner')
+    .then(puzzle => {
+        // console.log('I am printing Puzzle: ', puzzle)
+        console.log('puzzle.owner.id: ', puzzle.owner.id)
+        console.log('ownerId: ', ownerId)
+        if (ownerId == puzzle.owner.id) {
+            res.render('puzzle/edit', {puzzle})
+        } else {
+            res.render('user/accessDenied')
+        }
+    })
+})
+
+//NOTPage: Edit the puzzle
+
+
 //Page: One Problem to look at.
 router.get('/:puzzleId', (req, res) => {
     const puzzleId = req.params.puzzleId
@@ -42,7 +67,7 @@ router.get('/:puzzleId', (req, res) => {
     })
 })
 
-// GET
+// GET form page to create a new puzzle 
 router.get('/:collectionId/new', (req, res) => {
     console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
     const username = req.session.username
@@ -51,7 +76,7 @@ router.get('/:collectionId/new', (req, res) => {
     res.render('puzzle/new', { username, loggedIn, collectionId }) 
 })
 
-// POST - Create //Need to note this.
+// Create puzzle // NOT A PAGE
 router.post('/', (req, res) => {
     // console.log('HI')
     const collectionId = req.body.collections

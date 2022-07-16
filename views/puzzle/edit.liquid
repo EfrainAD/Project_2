@@ -1,0 +1,33 @@
+{% layout 'layout.liquid' %}
+
+{% block content %}
+<div class="container-md">
+    <form action="/puzzle/{{puzzle._id}}?_method=PUT/edit" method="POST">
+        <fieldset>
+            <legend>Edit This {{puzzle.problem}}</legend>
+            <label class="form-label">Question:</label>
+            <input 
+                type="text" 
+                name="problem" 
+                placeholder="enter name" 
+                class="form-control"
+                value="{{puzzle.problem}}"
+            >
+            <label class="form-label">public</label>
+            <input 
+                type="checkbox" 
+                name="public" 
+                class="form-check-input"
+                {% if puzzle.public %} 
+                    checked
+                {% endif %}
+            >
+        </fieldset>
+        <div class="btn-group">
+            <input type="submit" value="Edit {{ puzzle.name }}" class="btn btn-success">
+            
+            <a href="/puzzle" class="btn btn-warning">Go Back</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
