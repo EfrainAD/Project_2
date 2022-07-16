@@ -119,12 +119,18 @@ router.post('/', (req, res) => {
 // localhost:3000/fruits/:id
 router.put('/:id', (req, res) => {
     const collectionId = req.params.id
-
+    const userId = req.session.userId
     req.body.public = req.body.public === 'on'
 
-    Collection.findByIdAndUpdate(collectionId, req.body, { new: true })
+    Collection.findById(collectionId)
+        .populate('owner')
         .then(collection => {
-            res.redirect(`/collection/${collection._id}`)
+            if (userId == collection.owner.id) {
+                collection.findByIdAndUpdate(collectionId, req.body, { new: true })
+                res.redirect(`/collection/${collection._id}`)
+            } else {
+                res.render('user/accessDenied')
+            }
         })
         .catch(err => {
             res.json(err)
