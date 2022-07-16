@@ -46,16 +46,14 @@
                 </form>
             </div>
         </article>
-        <!-- <div class="col-md-6">
-            <form action="/comments/{{fruit._id}}" method="POST">
-                <fieldset>
-                    <legend>Add comment</legend>
-                    <label class="form-label">Comment: </label>
-                    <input type="text" class="form-control" name="note" placeholder="Enter comment here"/>
-                </fieldset>
-                <input type="submit" class="btn btn-success" value="Add comment" />
+        <div class="col-md-6">
+            <form action="/user/{{collection.id}}" method="POST">
+                    <label class="form-label">Add to which collection: </label>
+                    <input type="text" class="form-control" name="userCollection" value="{{collection.name}}" />
+                <input type="submit" class="btn btn-success" value="Add All Problems to my Problem set" />
             </form>
-        </div>
+        </div> 
+        <!-- 
         {% if fruit.comments.length > 0 %}
         <div class="container-sm justify-content-center">
             <div class="col-md-8 col-lg-6" >
