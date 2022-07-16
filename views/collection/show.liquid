@@ -26,6 +26,18 @@
                     <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}</a></p>
                 {% endfor %}
             {% endif %}
+
+            <!-- Display any Private problem that the user has in this collection. -->
+            {% if puzzlePrivate.length > 0 %}
+               <h3>Your Private Problems in this collection</h3>
+               {% for puzzle in puzzlePrivate %}
+                <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}</a></p>
+                {% endfor %}
+            {% else %}
+                
+            {% endif %}
+            
+
             <a href="/puzzle/{{collection._id}}/new">Add a Problem</a>
             <div class="btn-group">
                 <a href="/collection/{{collection._id}}/edit" class="btn btn-primary">Edit Collection</a>

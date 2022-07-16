@@ -20,6 +20,7 @@ router.delete('/delete/:id', (req, res) => {
 // localhost:8000/collection
 router.get('/', (req, res) => {
     Collection.find({public: true})
+        .populate('owner', 'username')
         .then(collection => {
             res.render('collection/index', { collection })
         })
@@ -53,7 +54,10 @@ router.get('/:id/edit', (req, res) => {
 // localhost:3000/fruits/:id <- change with the id being passed in
 router.get('/:id', async (req, res) => {
     const collectionId = req.params.id
-    const puzzle = await Puzzle.find({collections: collectionId})
+    const userId = req.session.userId
+    const username = req.session.username
+    const puzzle = await Puzzle.find({collections: collectionId, public: true})
+    const puzzlePrivate = await Puzzle.find({collections: collectionId, public: false, owner: userId})
 
     Collection.findById(collectionId)
         // .populate('puzzle') //Not owrk Why????
@@ -62,14 +66,11 @@ router.get('/:id', async (req, res) => {
         .then(collection => {
             // res.json(collection)
 
-            const userId = req.session.userId
-            const username = req.session.username
-
             if ((collection.public === true) || (collection.owner.id == userId) )  {
                 console.log('This is req.session: ', req.session)
                 console.log('This is userId: ', userId)
                 console.log('This is collection.owner.id: ', collection.owner.id)
-                res.render('collection/show', { collection, puzzle, userId, username})
+                res.render('collection/show', { collection, puzzle, puzzlePrivate, userId, username})
             }
             else {
                 res.render('user/accessDenied')

@@ -7,7 +7,7 @@
         <p>There are no collections yet. Please add some.</p>
     {% else %}
         {% for collection in collection %}
-            <p><a href="/collection/{{collection.id}}">{{collection.name}}</a></p>
+            <p><a href="/collection/{{collection.id}}">{{collection.name}}</a> {{collection.owner.username}}</p>
         {% endfor %}
     {% endif %}
 
