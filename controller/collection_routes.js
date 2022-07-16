@@ -45,10 +45,15 @@ router.get('/new', (req, res) => {
 // GET route for displaying an update form
 router.get('/:id/edit', (req, res) => {
     const collectionId = req.params.id
+    const userId = req.session.userId
 
     Collection.findById(collectionId)
         .then(collection => {
-            res.render('collection/edit', { collection })
+            if (collection.owner.id == userId) {
+                collection.remove()
+                res.render('collection/edit', { collection })
+            } else {
+                res.render('user/accessDenied')}
         })
         .catch(err => {
             res.json(err)
