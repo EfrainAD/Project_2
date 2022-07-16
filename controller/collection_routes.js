@@ -46,11 +46,15 @@ router.get('/new', (req, res) => {
 router.get('/:id/edit', (req, res) => {
     const collectionId = req.params.id
     const userId = req.session.userId
-
+    
     Collection.findById(collectionId)
+        .populate('owner')
         .then(collection => {
+            const ownerId = collection.owner.id
+            console.log('userId: ', userId)
+            console.log('ownerId: ', ownerId)
+            console.log('collection.owner.id: ', collection.owner.id)
             if (collection.owner.id == userId) {
-                collection.remove()
                 res.render('collection/edit', { collection })
             } else {
                 res.render('user/accessDenied')}
