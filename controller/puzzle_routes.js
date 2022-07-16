@@ -7,14 +7,21 @@ const { route } = require('./collection_routes')
 // DELETE - Delete
 router.delete('/delete/:id', (req, res) => {
     const PuzzleId = req.params.id
+    const userId = req.session.userId
 
-    Puzzle.findByIdAndRemove(PuzzleId)
-        .then(puzzle => {
-            res.redirect('/collections')
-        })
-        .catch(err => {
-            res.json(err)
-        })
+    Puzzle.findById(PuzzleId)
+    .populate('owner')
+    .then(puzzle => {
+        if (userId == puzzle.owner.id) {
+            puzzle.remove()
+            res.redirect('/collection')
+        } else {
+            res.render('user/accessDenied')
+        }
+    })
+    .catch(err => {
+        res.json(err)
+    })
 })
 
 //Temp show all problems on DB
@@ -30,7 +37,7 @@ router.get('/index', (req, res) => {
 router.get('/:puzzleId/edit', (req, res) => {
     const puzzleId = req.params.puzzleId
     const ownerId = req.session.userId
-
+    
     Puzzle.findById(puzzleId)
     .populate('owner')
     .then(puzzle => {
@@ -46,7 +53,75 @@ router.get('/:puzzleId/edit', (req, res) => {
 })
 
 //NOTPage: Edit the puzzle
+router.put('/:puzzleId', (req, res) => {
+    const userId = req.session.userId
+    const puzzleId = req.params.puzzleId
+    req.body.public = req.body.public === 'on'
+    Puzzle.findById(puzzleId)
+    .populate('owner')
+    .then(puzzle => {
+        console.log('req.body: ', req.body)
+        console.log('HI')
+        if (userId == puzzle.owner.id) {
+        } else {
+            res.render('user/accessDenied')
+        }
+    })
+    Puzzle.findByIdAndUpdate(puzzleId, req.body, { new: true })
+    .then(puzzle => {res.redirect( `/puzzle/${puzzleId}`)})
+    
+    
+})
 
+// //TAKE ONE, NEXT TAKE
+// router.put('/:puzzleId', (req, res) => {
+//     const userId = req.session.userId
+//     const puzzleId = req.params.puzzleId
+//     req.body.public = req.body.public === 'on'
+//     console.log('HI')
+//     Puzzle.findById(puzzleId)
+//     .populate('owner')
+//     .then(puzzle => {
+//         console.log('req.body: ', req.body)
+//         console.log('HI')
+//         if (userId == puzzle.owner.id) {
+//             Puzzle.findByIdAndUpdate(puzzleId, req.body, { new: true })
+//             console.log(puzzleId)
+            
+//             // Puzzle.findByIdAndUpdate(puzzleId, req.body, { new: true })
+//             res.redirect(`/puzzle/${puzzleId}`)
+//         } else {
+//             res.render('user/accessDenied')
+//         }
+//     })
+// })
+/////trash under
+// router.put('/:id', (req, res) => {
+//     const puzzleId = req.params.id
+//     const userId = req.session.userId
+//     req.body.public = req.body.public === 'on'
+
+//     Puzzle.findById(puzzleId)
+//         .populate('owner')
+//         .then(collection => {
+//             if (userId == collection.owner.id) {
+//                 console.log('HI in if')
+//                 collection.set(req.body)
+//                 collection.save()
+//                 // collection.update(req.body)
+//                 // Puzzle.findByIdAndUpdate(puzzleId, req.body, { new: true })
+//                 console.log('HI')
+                
+//                 res.redirect(`/puzzle/${puzzle._id}`)
+//             } else {
+//                 res.render('user/accessDenied')
+//             }
+//         })
+//         .catch(err => {
+//             res.json(err)
+//         })
+// })
+///////Trash above
 
 //Page: One Problem to look at.
 router.get('/:puzzleId', (req, res) => {
