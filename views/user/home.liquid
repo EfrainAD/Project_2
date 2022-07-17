@@ -6,6 +6,7 @@
 <h2>Your Collection</h2>
 
 <p><a href="/collection/new"><button>Add New Collection</button></a></p>
+    <!-- Show all collections that the user has. -->
     {% if collection.length == 0 %}
         <p>There are no collections yet. Please add some.</p>
     {% else %}
@@ -19,6 +20,11 @@
             </p>
         {% endfor %}
     {% endif %}
+
+<h2>Problems</h2>
+{% for problem in user.personalTracker %}
+    <p>{{probem}}</p>
+{% endfor %}
 
 <h2></h2>
 <p>{{user.personalTracker}}</p>

@@ -25,6 +25,7 @@ router.delete('/delete/:id', (req, res) => {
 // GET - Index
 // localhost:8000/collection
 router.get('/', (req, res) => {
+    Collection.find({}).then(col => {console.log(col)})
     Collection.find({public: true})
         .populate('owner', 'username')
         .then(collection => {

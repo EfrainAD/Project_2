@@ -113,12 +113,74 @@ router.get('/logout', (req, res) => {
     })
 })
 
+router.post('/:collectionId', async (req, res) => {
+    const collectionId = req.params.collectionId
+    const userId = req.session.userId
+    const collectionToAdd = req.body.userCollection
+
+    // A test that need to be removed
+    const allCollections = await Collection.find({}).populate('puzzle')
+    console.log('////////////', allCollections)
+    // End of test that need be removed
+
+    // Make the collection if not exist. return Id
+    // If it does exist, store the id. /////
+    // console.log('Name of the collection to add is ', collectionToAdd)
+    let puzzleCollectionId = await Collection.exists({owner: userId, name: collectionToAdd})//.lean()
+    // console.log('Hi before the if', puzzleCollectionId)
+    if (!puzzleCollectionId) {
+        puzzleCollectionId = await Collection.create({owner: userId, name: collectionToAdd})
+        // console.log('Hi in the if', puzzleCollectionId)
+    } 
+    // console.log('Hi after the if', puzzleCollectionId)
+
+    // // This will find the collection the user wants to add the problems from.
+    // // Make the a copy of them for the next step.
+    Collection.findById(collectionId)
+    .populate('owner')
+    .populate('puzzle')
+    .then(collection => {
+        console.log('Hi Collection to get problems from ', collection)
+        console.log('Hi Collection.puzzle to get problems from ', collection.puzzle)
+
+        if ((collection.public == true) || (userId == collection.owner.id) ) {
+        console.log('Passsed the public or owner check.')
+            collection.puzzle.forEach(puzzle => {
+                console.log('Hi, I am in the .forEatch loop of collection.')
+
+                const body = {
+                    origin: 'House'//puzzle.id, 
+                    // collections: [puzzleCollectionId], //ownser collection above
+                    // problem: puzzle.problem,
+                    // dueDate: Date.now(),
+                    // dayJumper: 0
+                }
+                console.log('Hi This is the body: ', body)
+                PersonalTracker.create(body) 
+                .then(trackedProblem => {
+                    User.findByIdAndUpdate(userId, {personalTracker: trackedProblem.id})
+                    User.findById(userId)
+                    .populate(personalTracker)
+                    .then(user => {console.log('Hi user has this showing up as there personal collection. I should be there. ', user.personalTracker)})
+        
+                    puzzleCollectionId.puzzle.push(trackedProblem)
+                })
+            })
+            res.redirect('/user')
+        } else {
+            res.render('user/accessDenied')
+        }
+    })
+    
+})
+
 router.get('/', async (req, res) => {
     const userId = req.session.userId
     const user = await User.findById( userId )
-    // const puzzle = await Puzzle.find({owner: user})
-    
-    Collection.find({owner: user})
+    .populate('personalTracker')
+
+
+    Collection.find({owner: userId})
         .then (collection => {
             res.render('user/home', { user, collection})
         })

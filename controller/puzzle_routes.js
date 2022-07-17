@@ -152,28 +152,47 @@ router.get('/:collectionId/new', (req, res) => {
 })
 
 // Create puzzle // NOT A PAGE
-router.post('/', (req, res) => {
-    // console.log('HI')
+router.post('/', async (req, res) => {
     const collectionId = req.body.collections
     console.log('collectionId: '+collectionId)
     
     req.body.owner = req.session.userId
     req.body.public = req.body.public === 'on'
     
-    console.log('res.body: ', req.body)
-    Puzzle.create(req.body)
-        .then(puzzle => {
-                console.log('Puzzle object created: ',puzzle)
-                Collection.findById(collectionId)
-                    .then(collection => {
-                        collection.puzzle = (puzzle._id) //Doesn't seem care if I did the push. need test.
-                        console.log('collection that puzzle should be added to ', collection)
-                        res.redirect(`/collection/${collectionId}`)
-                    })
-        .catch(err => res.send(err))
+    const newPuzzle = await Puzzle.create(req.body)
+    console.log('New puzzle just created: ', newPuzzle)
+
+    const updatedCollection = await Collection.findByIdAndUpdate(collectionId,{$push: {puzzle: [newPuzzle.id]}}, {new: true})
+    console.log('Updated Collection returned is: ', updatedCollection)
+    
+    res.redirect(`/collection/${collectionId}`)
+    //             Collection.findByIdAndUpdate(collectionId, {puzzle: puzzle}, {new: true})
+
+
+    // console.log('res.body: ', req.body)
+    // Puzzle.create(req.body)
+    //     .then(puzzle => {
+    //             console.log('Puzzle object created: ',puzzle)
+    //             Collection.findByIdAndUpdate(collectionId, {puzzle: puzzle}, {new: true})
+    //             // Collection.findById(collectionId)
+    //                 .then(collection => {
+                        
+    //                     // collection.puzzle.push(puzzle)
+                        
+    //                     //collection.puzzle.push(puzzle) //Doesn't work.
+
+    //                     console.log('collection that puzzle should be added to ', collection)
+    //                     // collection.save()
+    //                     // res.redirect(`/collection/${collectionId}`)
+    //                 })
+    //                 Collection.findById(collectionId).populate("puzzle")
+    //                 .then(collection => {
+    //                     console.log('///////Collection puzzle is ', collection.puzzle)
+    //                 })
+    //     .catch(err => res.send(err))
         
-    })
-    .catch(err => res.send(err))
+    // })
+    // .catch(err => res.send(err))
 })
 
 module.exports = router

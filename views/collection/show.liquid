@@ -46,6 +46,9 @@
                 </form>
             </div>
         </article>
+        <!-- Button to add all problem in collection to personal problem que. -->
+        <!-- req.params will have the collection id to get problems from. -->
+        <!-- req.body.userCollection will have the users collection that he/she want's to add the problems to. -->
         <div class="col-md-6">
             <form action="/user/{{collection.id}}" method="POST">
                     <label class="form-label">Add to which collection: </label>
