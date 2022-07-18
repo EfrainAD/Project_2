@@ -2,6 +2,7 @@
 // First, import dependencies
 ///////////////////////////////////////
 const mongoose = require('./connection')
+const trackerSchema = require('./personal-tracker')
 
 ///////////////////////////////////////
 // define our user model
@@ -21,10 +22,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    personalTracker: [{
-          type: Schema.Types.ObjectId,
-          ref: "Tracker"
-    }]
+    personalTracker: [trackerSchema]
 })
 
 // make a user model with the userSchema

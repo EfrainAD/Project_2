@@ -21,14 +21,12 @@
         {% endfor %}
     {% endif %}
 
-<h2>Problems</h2>
-{% for problem in user.personalTracker %}
-    <p>{{probem}}</p>
+<h2>Your Problems Stack</h2>
+<h6>Number of problems: {{user.personalTracker.length}}</h6>
+{% for problems in user.personalTracker %}
+            
+    <p>{{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}}</p>
 {% endfor %}
-
-<h2></h2>
-<p>{{user.personalTracker}}</p>
-
 
 {% endblock %}
 

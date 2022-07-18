@@ -158,7 +158,30 @@ router.post('/:collectionId', async (req, res) => {
                 //Add puzzle to the new collection that was made.
                 console.log("HI the newCollection I am trying to add the puzzle to is, ", newCollection)
                 console.log("HI the collectionFrom.puzzle[i] I am trying to add is, ", collectionFrom.puzzle[i])
-                Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: collectionFrom.puzzle[i]}}, {new: true})
+                
+                // TRY ONE
+                // Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: collectionFrom.puzzle[i]}}, {new: true})
+                // TRY TWO
+                // Collection.findById(newCollection)
+                // .then(collection => {
+                //     collection.puzzle.push(collectionFrom.puzzle[i])
+                // })
+                // TRY THREE
+                // const changedNewCollection = await Collection.findById(newCollection)
+                // changedNewCollection.puzzle.push(collectionFrom.puzzle[i])
+                // TRY FOUR
+                // const changedNewCollection = await Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: collectionFrom.puzzle[i]}}, {new: true})
+                // TRY FIVE
+                // Collection.findById(newCollection)
+                // .then(collection => {
+                //     collection.puzzle = collectionFrom.puzzle[i]
+                // })
+                // TRY SIX
+                //  const changedNewCollection = await Collection.findById(newCollection)
+                // changedNewCollection.puzzle = collectionFrom.puzzle[i]
+                
+                console.log("HI after the findByIdAndUpdate my collection looks like this (newCollection), ", newCollection)
+
                 //console.log('HI This is temp, to show update ',temp)
                 
                 // Making an object for PersonalTracker model.
@@ -170,10 +193,16 @@ router.post('/:collectionId', async (req, res) => {
                     dayJumper: 0
                 }
                 console.log('Hi This is the body used to create the personal tracker: ', body) 
-                const personalTracker = await PersonalTracker.create(body) 
+                // const personalTracker = await PersonalTracker.create(body) 
                 
                 //Add the new tracker.
-                User.findByIdAndUpdate(userId, {$push:{personalTracker: personalTracker}}, {new: true}) 
+                // TRY ONE
+                // User.findByIdAndUpdate(userId, {$push:{personalTracker: body}}, {new: true})
+                // TRY TWO
+                const user = await User.findById(userId).populate('personalTracker')
+                user.personalTracker.push(body)
+                user.save()
+                console.log('HI user: ', user)
             }
         }
         //Check to see if personalTracker is there.
@@ -190,10 +219,8 @@ router.get('/', async (req, res) => {
     const userId = req.session.userId
     const user = await User.findById( userId )
     .populate('personalTracker')
+    console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
 
-    // User.findById(userId)
-    // // .populate('personalTracker')
-    // .then(user => {console.log('Hi user has this showing up as there personal FrocollectionFrom. It should be there. ', user.personalTracker)})
 
     Collection.find({owner: userId})
         .then (collection => {
