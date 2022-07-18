@@ -114,14 +114,9 @@ router.get('/logout', (req, res) => {
 })
 
 router.post('/:collectionId', async (req, res) => {
-    const collectionId = req.params.collectionId
-    const userId = req.session.userId
-    const collectionToAdd = req.body.userCollection
-
-    // A test that need to be removed
-    const allCollections = await Collection.find({}).populate('puzzle')
-    console.log('////////////', allCollections)
-    // End of test that need be removed
+    const collectionId = req.params.collectionId // Collection to get the problems
+    const userId = req.session.userId               // User who requested
+    const collectionToAdd = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it. //TODO: Need check later if that a good idea or laway make a new one regardless.
 
     // Make the collection if not exist. return Id
     // If it does exist, store the id. /////
@@ -143,28 +138,44 @@ router.post('/:collectionId', async (req, res) => {
         console.log('Hi Collection to get problems from ', collection)
         console.log('Hi Collection.puzzle to get problems from ', collection.puzzle)
 
+        // Check if autherized to take these problems from this collection.
+        // If so go through each problem and add it to the newly made collection.
         if ((collection.public == true) || (userId == collection.owner.id) ) {
         console.log('Passsed the public or owner check.')
             collection.puzzle.forEach(puzzle => {
                 console.log('Hi, I am in the .forEatch loop of collection.')
 
+                // To add the problem Id's to new collections
+                // TODO: should only grab public puzzles.
+                // PROBLEM: This does not seem to add to the new collection made for user.
+                Collection.exists({ puzzle: puzzle}, (err, doc) => {
+                    if (!doc) {
+                        console.log('HIHIEHIHIHIHIHIHIHI')
+                        Collection.findByIdAndUpdate(puzzleCollectionId, {$push:{puzzle: puzzle.id}}, {new: true})
+                    }
+                })
+
+                // Making an object for PersonalTracker model.
                 const body = {
-                    origin: 'House'//puzzle.id, 
-                    // collections: [puzzleCollectionId], //ownser collection above
-                    // problem: puzzle.problem,
-                    // dueDate: Date.now(),
-                    // dayJumper: 0
+                    origin: puzzle.id,
+                    collections: [puzzleCollectionId.id], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
+                    problem: puzzle.problem,
+                    dueDate: Date.now(),
+                    dayJumper: 0
                 }
-                console.log('Hi This is the body: ', body)
+                console.log('Hi This is the body: ', body) 
+
+                //Add to new tracker.
+                // PROBLEM This does not $push: to users personal Tracker.
                 PersonalTracker.create(body) 
                 .then(trackedProblem => {
-                    User.findByIdAndUpdate(userId, {personalTracker: trackedProblem.id})
-                    User.findById(userId)
-                    .populate(personalTracker)
-                    .then(user => {console.log('Hi user has this showing up as there personal collection. I should be there. ', user.personalTracker)})
-        
-                    puzzleCollectionId.puzzle.push(trackedProblem)
+                    User.findByIdAndUpdate(userId, {$push:{personalTracker: trackedProblem}}, {new: true})
+                    
+                    //puzzleCollectionId.puzzle.push(trackedProblem)
                 })
+                    //Check to see if personalTracker is there.
+                    // Because of how Prolmises work I am moving this out of here.
+                    // Code was here moved to the user get route.
             })
             res.redirect('/user')
         } else {
@@ -179,6 +190,9 @@ router.get('/', async (req, res) => {
     const user = await User.findById( userId )
     .populate('personalTracker')
 
+    User.findById(userId)
+    // .populate('personalTracker')
+    .then(user => {console.log('Hi user has this showing up as there personal collection. It should be there. ', user.personalTracker)})
 
     Collection.find({owner: userId})
         .then (collection => {
