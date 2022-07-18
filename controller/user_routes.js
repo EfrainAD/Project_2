@@ -148,12 +148,18 @@ router.post('/:collectionId', async (req, res) => {
                 // To add the problem Id's to new collections
                 // TODO: should only grab public puzzles.
                 // PROBLEM: This does not seem to add to the new collection made for user.
-                Collection.exists({ puzzle: puzzle}, (err, doc) => {
-                    if (!doc) {
-                        console.log('HIHIEHIHIHIHIHIHIHI')
-                        Collection.findByIdAndUpdate(puzzleCollectionId, {$push:{puzzle: puzzle.id}}, {new: true})
-                    }
-                })
+                if (puzzle.public) {
+                    console.log('HI I am inside my puzzle public test. PASS')
+                    const temp = await Collection.findByIdAndUpdate(puzzleCollectionId, {$push:{puzzle: puzzle.id}}, {new: true})
+                    console.log('HI This is temp, to show update ',temp)
+                }
+                // puzzle.exists({ puzzle: puzzle}, (err, doc) => {
+                //     if (!doc) {
+                //         console.log('HIHIEHIHIHIHIHIHIHI')
+                //         const temp = Collection.findByIdAndUpdate(puzzleCollectionId, {$push:{puzzle: puzzle.id}}, {new: true})
+                //         console.log('HI This si temp, to show update ',temp)
+                //     }
+                // })
 
                 // Making an object for PersonalTracker model.
                 const body = {
