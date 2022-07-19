@@ -1,13 +1,30 @@
+
 {
+  "name": "Go-Studies",
+  "version": "1.0.0",
+  "description": "A baby study app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js",
+    "seed": "node models/seed.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@https://github.com/EfrainAD/Project_2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "connect-mongo": "^4.6.0",
-    "dotenv": "^16.0.1",
-    "express": "^4.18.1",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
     "express-session": "^1.17.3",
     "liquid-express-views": "^1.0.8",
     "method-override": "^3.0.0",
-    "mongoose": "^6.4.4",
+    "mongoose": "^6.2.4",
     "morgan": "^1.10.0"
   }
 }

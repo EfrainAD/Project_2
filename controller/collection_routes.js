@@ -73,15 +73,18 @@ router.get('/:id', async (req, res) => {
     const userId = req.session.userId
     const username = req.session.username
     const puzzle = await Puzzle.find({collections: collectionId, public: true})
-    const puzzlePrivate = await Puzzle.find({collections: collectionId, public: false, owner: userId})
+    const puzzlePrivate = await Puzzle.find({collections: collectionId, public: false}) // , owner: userId
+    
+    console.log('Puzzle.find({collections: collectionId, public: true}): ', puzzle)
+    console.log('Puzzle private: ', puzzlePrivate)
 
     Collection.findById(collectionId)
-        // .populate('puzzle') //Not owrk Why????
+        .populate('puzzle') //Not owrk Why????
         .populate('owner','username')
         // send back some json
         .then(collection => {
             // res.json(collection)
-
+            console.log('collection in the .then ', collection)
             if ((collection.public === true) || (collection.owner.id == userId) )  {
                 console.log('This is req.session: ', req.session)
                 console.log('This is userId: ', userId)

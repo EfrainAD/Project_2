@@ -6,7 +6,10 @@
         <p>There are no collections yet. Please add some.</p>
     {% else %}
         {% for puzzle in puzzle %}
-            <p><a href="/puzzle/{{puzzle.id}}">{{puzzle}}</a></p>
+        
+            <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.owner}}</a></p>
+            <p>{{collections]}</p>
+            <p></p>
         {% endfor %}
     {% endif %}
 

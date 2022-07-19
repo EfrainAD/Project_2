@@ -13,34 +13,114 @@
                 {% endif %}
             </h3>
             <!-- <h1>Have look: {{collection}}</h1> -->
-            {% for problem in puzzle.problem %}
-               <h4><a href="/">Problem: {{problem}}</a></h4>
+            <!-- {
+  _id: new ObjectId("62d6bd55fd6616932c31c03e"),
+  owner: {
+    _id: new ObjectId("62d6b974c83d950ccb111218"),
+    username: 'userThree'
+  },
+  name: 'New normal',
+  public: false,
+  puzzle: [ // Make plural
+    {
+      _id: new ObjectId("62d6bd66fd6616932c31c04d"),
+      owner: new ObjectId("62d6b974c83d950ccb111218"),
+      collections: [Array],
+      public: true,
+      problem: 'public',
+      createdAt: 2022-07-19T14:19:18.636Z,
+      updatedAt: 2022-07-19T14:19:18.636Z,
+      __v: 0
+    },
+    {
+      _id: new ObjectId("62d6bd6dfd6616932c31c054"),
+      owner: new ObjectId("62d6b974c83d950ccb111218"),
+      collections: [Array],
+      public: true,
+      problem: '2',
+      createdAt: 2022-07-19T14:19:25.642Z,
+      updatedAt: 2022-07-19T14:19:25.642Z,
+      __v: 0
+    },
+    {
+      _id: new ObjectId("62d6bd73fd6616932c31c05b"),
+      owner: new ObjectId("62d6b974c83d950ccb111218"),
+      collections: [Array],
+      public: false,
+      problem: 'private',
+      createdAt: 2022-07-19T14:19:31.770Z,
+      updatedAt: 2022-07-19T14:19:31.770Z,
+      __v: 0
+    },
+    {
+      _id: new ObjectId("62d6bd7cfd6616932c31c062"),
+      owner: new ObjectId("62d6b974c83d950ccb111218"),
+      collections: [Array],
+      public: false,
+      problem: 'private three',
+      createdAt: 2022-07-19T14:19:40.697Z,
+      updatedAt: 2022-07-19T14:19:40.697Z,
+      __v: 0
+    }
+  ],
+  createdAt: 2022-07-19T14:19:01.806Z,
+  updatedAt: 2022-07-19T14:19:40.710Z,
+  __v: 0
+} -->
+            <!-- {% for puzzle in collection.puzzle %}
+               <h4><a href="/">Problem: {{puzzle.problem}}</a></h4>
+            {% endfor %} -->
+            
+            <!-- We are getting the number of problems/puzzle that are public and private so we can display to the user how many he has of each. -->
+            <!-- public -->
+            {% assign publicCounter = 0 %}
+            {% for item in collection.puzzle %}
+                {% if item.public == true %}
+                    {% assign publicCounter = publicCounter | plus: 1  %}
+                {% endif %}
             {% endfor %}
-            <h1>How many problems {{puzzle.length}}</h1>
-            {% if puzzle.length == 0 %}
+            <!-- private -->
+            {% assign privateCounter = 0 %}
+            {% for item in collection.puzzle %}
+                {% if item.public == false %}
+                    {% assign privateCounter = privateCounter | plus: 1  %}
+                {% endif %}
+            {% endfor %}
+            
+            <!-- Display all problems in two parts, 'public part' and 'private part' -->
+            <!-- Public Part -->
+            <h1>How many problems {{publicCounter}}</h1> <!-- should filter public -->
+            {% if publicCounter == 0 %}
                <p>
                     This collection has no problems in it. 
                 </p>
             {% else %}
-                {% for puzzle in puzzle %}
-                    <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}</a></p>
+                {% for puzzle in collection.puzzle %}
+                    {% if puzzle.public == true %}
+                        <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}</a></p>
+                    {% endif %}
                 {% endfor %}
             {% endif %}
 
+            <!-- Private Part -->
             <!-- Display any Private problem that the user has in this collection. -->
-            {% if puzzlePrivate.length > 0 %}
+            {% if privateCounter > 0 %}
                <h3>Your Private Problems in this collection</h3>
-               {% for puzzle in puzzlePrivate %}
-                <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}</a></p>
+               {% for puzzle in collection.puzzle %}
+                    {% if puzzle.public == false %}
+                            <p><a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}</a></p>
+                    {% endif %}
                 {% endfor %}
-            {% else %}
-                
             {% endif %}
             
-
+            <!-- These are my 3 buttons (Plus online form under it) -->
+            <!-- Add problem to the collection. -->
             <a href="/puzzle/{{collection._id}}/new">Add a Problem</a>
+            
             <div class="btn-group">
+                <!-- Edit the collection -->
                 <a href="/collection/{{collection._id}}/edit" class="btn btn-primary">Edit Collection</a>
+                <!-- Delete the collection -->
                 <form action="/collection/delete/{{collection._id}}?_method=DELETE" method="POST">
                     <input type="submit" value="Delete" class="btn btn-danger">
                 </form>

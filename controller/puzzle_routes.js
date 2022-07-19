@@ -161,13 +161,12 @@ router.post('/', async (req, res) => {
     
     const newPuzzle = await Puzzle.create(req.body)
     console.log('New puzzle just created: ', newPuzzle)
-
+ 
     const updatedCollection = await Collection.findByIdAndUpdate(collectionId,{$push: {puzzle: [newPuzzle.id]}}, {new: true})
     console.log('Updated Collection returned is: ', updatedCollection)
     
     res.redirect(`/collection/${collectionId}`)
     //             Collection.findByIdAndUpdate(collectionId, {puzzle: puzzle}, {new: true})
-
 
     // console.log('res.body: ', req.body)
     // Puzzle.create(req.body)
