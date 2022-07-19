@@ -121,12 +121,14 @@ router.post('/:collectionId', async (req, res) => {
     // Make the collection if not exist. return Id
     // If it does exist, store the id. /////
     // console.log('Name of the collection to add is ', newCollectionName)
-    let newCollection = await Collection.exists({owner: userId, name: newCollectionName})//.lean()
-    // console.log('Hi before the if', newCollection)
-    if (!newCollection) {
+    const newCollectionIfExists = await Collection.exists({owner: userId, name: newCollectionName})//.lean()
+   console.log('Hi//////////// before the if', newCollectionIfExists)
+   let newCollection = null
+    if (!newCollectionIfExists) {
         newCollection = await Collection.create({owner: userId, name: newCollectionName})
         // console.log('Hi in the if', newCollection)
     } 
+     
     // console.log('Hi after the if', newCollection)
 
     // // This will find the collection the user wants to add the problems from.
@@ -156,7 +158,7 @@ router.post('/:collectionId', async (req, res) => {
                 console.log('HI I am inside my puzzle public test. PASS')
                 
                 //Add puzzle to the new collection that was made.
-                console.log("HI the newCollection I am trying to add the puzzle to is, ", newCollection)
+                console.log("HIHIHIHIHIHi the newCollection I am trying to add the puzzle to is, ", newCollection.id)
                 console.log("HI the collectionFrom.puzzle[i] I am trying to add is, ", collectionFrom.puzzle[i])
                 
                 // TRY ONE
@@ -179,7 +181,32 @@ router.post('/:collectionId', async (req, res) => {
                 // TRY SIX
                 //  const changedNewCollection = await Collection.findById(newCollection)
                 // changedNewCollection.puzzle = collectionFrom.puzzle[i]
+                // TRY SEVEN
+                // Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: [collectionFrom.puzzle[i]]}}, {new: true})
+                // TRY EIGHT
+                // Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: [collectionFrom.puzzle[i]._id]}}, {new: true})
+                // TRY NINE
+                // const somethingtemp = await Collection.findByIdAndUpdate(newCollection.id, {$push:{puzzle: [collectionFrom.puzzle[i].id]}}, {new: true})
+                // const somethingtemp = await Collection.findByIdAndUpdate(newCollection.id, {$push:{puzzle: ['62d49096818c3a7e76a1eaca']}}, {new: true})
+                // newCollection.updateOne($push:{puzzle: ['62d49096818c3a7e76a1eaca']})
+
+
+                const somethingtemp = await Collection.findOne({_id: newCollection.id})
+                somethingtemp.puzzle.push(collectionFrom.puzzle[i].id)
+                somethingtemp.save()
+                console.log('HI THIS IS SOMETHINGTEMP', somethingtemp)
+                // Collection.updateOne({_id: newCollection.id}, {$push:{puzzle: [collectionFrom.puzzle[i]]}}, function (err, doc) {
+                //     if (err) console.log(err)
+                //     else {
+                //         console.log('doc: ', doc) 
+                //         doc.save()}
+                // })
                 
+                // const updatedCollection = await Collection.findByIdAndUpdate(collectionId,{$push: {puzzle: [newPuzzle.id]}}, {new: true})
+                // TRY TEN
+                // console.log('', newCollection.) // _.id kills
+                // Collection.findByIdAndUpdate(newCollection._id, {$push:{puzzle: [collectionFrom.puzzle[i].id]}}, {new: true})
+
                 console.log("HI after the findByIdAndUpdate my collection looks like this (newCollection), ", newCollection)
 
                 //console.log('HI This is temp, to show update ',temp)
@@ -202,7 +229,7 @@ router.post('/:collectionId', async (req, res) => {
                 const user = await User.findById(userId).populate('personalTracker')
                 user.personalTracker.push(body)
                 user.save()
-                console.log('HI user: ', user)
+                // console.log('HI user: ', user)
             }
         }
         //Check to see if personalTracker is there.
@@ -219,7 +246,7 @@ router.get('/', async (req, res) => {
     const userId = req.session.userId
     const user = await User.findById( userId )
     .populate('personalTracker')
-    console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
+    // console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
 
 
     Collection.find({owner: userId})
