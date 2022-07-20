@@ -285,11 +285,11 @@ router.post('/:collectionId', async (req, res) => {
                         dueDate: Date.now(),
                         dayJumper: 0
                     }
-                    // const newTracker = await PersonalTracker.create(body)
+                    const newTracker = await PersonalTracker.create(body)
                     
-                    // console.log('newTracker: ', newTracker)
+                    console.log('newTracker: ', newTracker)
 
-                    // userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
+                    userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
 
                     User.findById(userId).populate('personalTracker')
                     .then(user => {
