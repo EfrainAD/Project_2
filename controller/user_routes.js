@@ -277,7 +277,7 @@ router.post('/:collectionId', async (req, res) => {
                         console.log(respons)
                     })
                     
-                    console.log('==============================', collectionFrom.puzzle[i]) 
+                    console.log('==============================\nollectionFrom.puzzle[i]', collectionFrom.puzzle[i]) 
                     const body = {
                         origin: collectionFrom.puzzle[i].id,
                         collections: [newCollection.id], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
@@ -285,9 +285,27 @@ router.post('/:collectionId', async (req, res) => {
                         dueDate: Date.now(),
                         dayJumper: 0
                     }
-                    const user = await User.findById(userId).populate('personalTracker')
-                    user.personalTracker.push(body)
-                    user.save()
+                    // const newTracker = await PersonalTracker.create(body)
+                    
+                    // console.log('newTracker: ', newTracker)
+
+                    // userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
+
+                    User.findById(userId).populate('personalTracker')
+                    .then(user => {
+                        console.log('update after newTracker: ', user)
+                    })
+                    
+                    // , function (err, model){
+                    //     if (err) {
+                    //         console.log(err)
+                    //     }
+                    //     console.log('update after newTracker: ', model)
+                    // })
+                    // newTrackerr.findById(userId).populate('personalTracker')
+                    // user.personalTracker.push(body)
+                    // user.save()
+                    
 
                 }
             }

@@ -31,7 +31,7 @@ const trackerSchema = new Schema({
      }
 )
 
-// const Tracker = model('Tracker', trackerSchema)
+const Tracker = model('Tracker', trackerSchema)
 
-// module.exports = Tracker
-module.exports = trackerSchema
+module.exports = Tracker
+// module.exports = trackerSchema

@@ -22,7 +22,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    personalTracker: [trackerSchema]
+    personalTracker: [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Tracker'
+   }]
 })
 
 // make a user model with the userSchema
