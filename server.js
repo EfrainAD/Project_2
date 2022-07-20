@@ -51,8 +51,8 @@ app.use('/puzzle', puzzleRoutes)
 
 // localhost:8000/
 app.get('/', (req, res) => {
-	res.send('your server is running, better go catch it <a href="/main">Go to Home Page</a>')
-	// res.redirect('/go')
+	// res.send('your server is running, better go catch it <a href="/main">Go to Home Page</a>')
+	res.redirect('/main')
 })
 
 ////////////////////////////////////////////
