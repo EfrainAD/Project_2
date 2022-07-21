@@ -23,9 +23,15 @@
 
 <h2>Your Problems Stack</h2>
 <h6>Number of problems: {{user.personalTracker.length}}</h6>
-{% for problems in user.personalTracker %}
-            
-    <p>{{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}} Due Date: {{user.personalTracker[forloop.index0].dueDate}}</p>
+{% for problems in user.personalTracker %}    
+    <p>
+        {{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}} 
+        Due Date: {{user.personalTracker[forloop.index0].dueDate}}
+        
+        <form action="/main/delete/{{user.personalTracker[forloop.index0].id}}?_method=DELETE" method="POST">
+            <input type="submit" value="X" class="btn btn-danger">
+        </form>
+    </p>
 {% endfor %}
 
 {% endblock %}

@@ -5,7 +5,7 @@ const express = require('express')
 const User = require('../models/user')
 const PersonalTracker = require('../models/personal-tracker')
 const Collection = require('../models/collection')
-const Puzzle = require('../models/personal-tracker')
+const Puzzle = require('../models/puzzle')
 // bcrypt is used to hash(read: encrypt) passwords
 const bcrypt = require('bcryptjs')
 
@@ -112,139 +112,46 @@ router.get('/logout', (req, res) => {
         res.redirect('/main')
     })
 })
+router.post('/tracker/:puzzleId', async (req, res) => {
+    const userId = req.session.userId
+    const puzzleId = req.params.puzzleId
 
-// router.post('/:collectionId', async (req, res) => {
-//     const puzzleSourceCollection = req.params.collectionId // Collection to get the problems
-//     const userId = req.session.userId               // User who requested
-//     const newCollectionName = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it. //TODO: Need check later if that a good idea or laway make a new one regardless.
 
-//     // Make the collection if not exist. return Id
-//     // If it does exist, store the id. /////
-//     // console.log('Name of the collection to add is ', newCollectionName)
-//     const newCollectionIfExists = await Collection.exists({owner: userId, name: newCollectionName})//.lean()
-//    console.log('Hi//////////// before the if', newCollectionIfExists)
-//    let newCollection = null
-//     if (!newCollectionIfExists) {
-//         newCollection = await Collection.create({owner: userId, name: newCollectionName})
-//         // console.log('Hi in the if', newCollection)
-//     } 
-     
-//     // console.log('Hi after the if', newCollection)
+    const userCollections = await Collection.find({owner: userId})
+    // .populate('collection')
 
-//     // // This will find the collection the user wants to add the problems from.
-//     // // Make the a copy of them for the next step.
-//     const collectionFrom = await Collection.findById(puzzleSourceCollection)
-//     .populate('owner')
-//     .populate('puzzle')
+    let collectionToId = null
 
-//     console.log('Hi Collection to get problems from ', collectionFrom)
-//     console.log('Hi Collection.puzzle to get problems from ', collectionFrom.puzzle)
+    for (let i = 0; i < userCollections.length; i++) {
+        if (userCollections[i].name === 'none')
+            collectionToId = userCollections[i].id
+    }
+    if (collectionToId === null) {
+        const collectionTo = await Collection.create({
+            owner: userId,
+            name: 'none',
+            puzzle: [puzzleId]
+        })
+        collectionToId = collectionTo.id
+    }
+    
+    const puzzle = await Puzzle.findById(puzzleId)
+   
+    const body = {
+        origin: puzzle.id,
+        collections: [collectionToId], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
+        problem: puzzle.problem,
+        answer: puzzle.answer,
+        dueDate: Date.now(),
+        dayJumper: 0
+    }
+    const newTracker = await PersonalTracker.create(body)
+    
+    console.log('newTracker: ', newTracker)
 
-//     // Check if autherized to take these problems from this collection.
-//     // If so go through each problem and add it to the newly made collection.
-//     if ((collectionFrom.public == true) || (userId == collectionFrom.owner.id) ) {
-//         console.log('Passsed the public or owner check.')
-        
-//         console.log('collectionFrom.puzzle.length = ', collectionFrom.puzzle.length)
-//         for (let i = 0; i < collectionFrom.puzzle.length; i++) {
-//             console.log('Hi, I am in the for loop of FrocollectionFrom.')
-
-//             // To add the problem Id's to new collections
-//             // TODO: should only grab public puzzles.
-//             // PROBLEM: This does not seem to add to the new FrocollectionFrom made for user. 
-//             // console.count()
-//             console.log('collectionFrom.puzzle.public = ', collectionFrom.puzzle[i].public)
-//             if (collectionFrom.puzzle[i].public) {
-//                 console.log('HI I am inside my puzzle public test. PASS')
-                
-//                 //Add puzzle to the new collection that was made.
-//                 console.log("HIHIHIHIHIHi the newCollection I am trying to add the puzzle to is, ", newCollection.id)
-//                 console.log("HI the collectionFrom.puzzle[i] I am trying to add is, ", collectionFrom.puzzle[i])
-                
-//                 // TRY ONE
-//                 // Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: collectionFrom.puzzle[i]}}, {new: true})
-//                 // TRY TWO
-//                 // Collection.findById(newCollection)
-//                 // .then(collection => {
-//                 //     collection.puzzle.push(collectionFrom.puzzle[i])
-//                 // })
-//                 // TRY THREE
-//                 // const changedNewCollection = await Collection.findById(newCollection)
-//                 // changedNewCollection.puzzle.push(collectionFrom.puzzle[i])
-//                 // TRY FOUR
-//                 // const changedNewCollection = await Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: collectionFrom.puzzle[i]}}, {new: true})
-//                 // TRY FIVE
-//                 // Collection.findById(newCollection)
-//                 // .then(collection => {
-//                 //     collection.puzzle = collectionFrom.puzzle[i]
-//                 // })
-//                 // TRY SIX
-//                 //  const changedNewCollection = await Collection.findById(newCollection)
-//                 // changedNewCollection.puzzle = collectionFrom.puzzle[i]
-//                 // TRY SEVEN
-//                 // Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: [collectionFrom.puzzle[i]]}}, {new: true})
-//                 // TRY EIGHT
-//                 // Collection.findByIdAndUpdate(newCollection, {$push:{puzzle: [collectionFrom.puzzle[i]._id]}}, {new: true})
-//                 // TRY NINE
-//                 // const somethingtemp = await Collection.findByIdAndUpdate(newCollection.id, {$push:{puzzle: [collectionFrom.puzzle[i].id]}}, {new: true})
-//                 // const somethingtemp = await Collection.findByIdAndUpdate(newCollection.id, {$push:{puzzle: ['62d49096818c3a7e76a1eaca']}}, {new: true})
-//                 // newCollection.updateOne($push:{puzzle: ['62d49096818c3a7e76a1eaca']})
-
-//                 // const puzzleBody = {
-//                 //     owner: userId,
-//                 //     problem: collectionFrom.puzzle[i].problem
-//                 // }
-//                 const somethingtemp = await Collection.findOne({_id: newCollection.id})
-//                 // somethingtemp.puzzle.push(collectionFrom.puzzle[i].id)
-//                  somethingtemp.puzzle.push(collectionFrom.puzzle[i].id)
-//                 somethingtemp.save()
-//                 console.log('HI THIS IS SOMETHINGTEMP', somethingtemp)
-//                 // Collection.updateOne({_id: newCollection.id}, {$push:{puzzle: [collectionFrom.puzzle[i]]}}, function (err, doc) {
-//                 //     if (err) console.log(err)
-//                 //     else {
-//                 //         console.log('doc: ', doc) 
-//                 //         doc.save()}
-//                 // })
-                
-//                 // const updatedCollection = await Collection.findByIdAndUpdate(collectionId,{$push: {puzzle: [newPuzzle.id]}}, {new: true})
-//                 // TRY TEN
-//                 // console.log('', newCollection.) // _.id kills
-//                 // Collection.findByIdAndUpdate(newCollection._id, {$push:{puzzle: [collectionFrom.puzzle[i].id]}}, {new: true})
-                
-//                 console.log("HI after the findByIdAndUpdate my collection looks like this (newCollection), ", newCollection)
-
-//                 //console.log('HI This is temp, to show update ',temp)
-                
-//                 // Making an object for PersonalTracker model.
-//                 const body = {
-//                     origin: collectionFrom.puzzle[i].id,
-//                     collections: [newCollection.id], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
-//                     problem: collectionFrom.puzzle[i].problem,
-//                     dueDate: Date.now(),
-//                     dayJumper: 0
-//                 }
-//                 console.log('Hi This is the body used to create the personal tracker: ', body) 
-//                 // const personalTracker = await PersonalTracker.create(body) 
-                
-//                 //Add the new tracker.
-//                 // TRY ONE
-//                 // User.findByIdAndUpdate(userId, {$push:{personalTracker: body}}, {new: true})
-//                 // TRY TWO
-//                 const user = await User.findById(userId).populate('personalTracker')
-//                 user.personalTracker.push(body)
-//                 user.save()
-//                 // console.log('HI user: ', user)
-//             }
-//         }
-//         //Check to see if personalTracker is there.
-//         // Because of how Prolmises work I am moving this out of here.
-//         // Code was here moved to the user get route.
-//     }
-//     else {
-//         res.render('user/accessDenied')
-//     }
-//     res.redirect('/user') 
-// })
+    userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
+    res.redirect('/user')
+})
 
 router.post('/:collectionId', async (req, res) => {
     const puzzleSourceCollection = req.params.collectionId // Collection to get the problems
@@ -282,6 +189,7 @@ router.post('/:collectionId', async (req, res) => {
                         origin: collectionFrom.puzzle[i].id,
                         collections: [newCollection.id], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
                         problem: collectionFrom.puzzle[i].problem,
+                        answer: collectionFrom.puzzle[i].answer,
                         dueDate: Date.now(),
                         dayJumper: 0
                     }
@@ -296,22 +204,9 @@ router.post('/:collectionId', async (req, res) => {
                         console.log('update after newTracker: ', user)
                     })
                     
-                    // , function (err, model){
-                    //     if (err) {
-                    //         console.log(err)
-                    //     }
-                    //     console.log('update after newTracker: ', model)
-                    // })
-                    // newTrackerr.findById(userId).populate('personalTracker')
-                    // user.personalTracker.push(body)
-                    // user.save()
-                    
 
                 }
             }
-            //Check to see if personalTracker is there.
-            // Because of how Prolmises work I am moving this out of here.
-            // Code was here moved to the user get route.
         }
         else {
             res.render('user/accessDenied')
@@ -322,21 +217,26 @@ router.post('/:collectionId', async (req, res) => {
 })
 
 router.get('/', async (req, res) => {
-    const userId = req.session.userId
-    const user = await User.findById( userId )
-    .populate('personalTracker')
-    // .populate({path:'personalTracker', options: { sort: {duedate: 1}} })
-    // console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
+    if (req.session.loggedIn === true) {
+        const userId = req.session.userId
+        const user = await User.findById( userId )
+        .populate('personalTracker')
+        // .populate({path:'personalTracker', options: { sort: {duedate: 1}} })
+        // console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
+    
+    
+        Collection.find({owner: userId})
+            .then (collection => {
+                res.render('user/home', { user, collection})
+            })
+            .catch(error => {
+                console.log(error)
+                res.json({ error })
+            })    
+    } else {
+        res.render('user/accessDenied')
+    }
 
-
-    Collection.find({owner: userId})
-        .then (collection => {
-            res.render('user/home', { user, collection})
-        })
-        .catch(error => {
-            console.log(error)
-            res.json({ error })
-        })    
 })
 
 ///////////////////////////////////////

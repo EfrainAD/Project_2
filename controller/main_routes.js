@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('../models/user')
 const PersonalTracker = require('../models/personal-tracker')
 
+
 router.get('/', async (req, res) => {
      const user = await User.findById(req.session.userId)
      .populate('personalTracker')
@@ -64,6 +65,16 @@ router.get('/:id/wrong', async (req, res) => {
      console.log('personalTracker after edit in /wrong ', tracker)
 
      res.redirect('/main/go')
+})
+
+// DELETE - Delete
+router.delete('/delete/:id', (req, res) => {
+     const trackerId = req.params.id
+ 
+     PersonalTracker.findByIdAndRemove(trackerId)
+     .then(tracker => {
+         res.redirect('/user')
+     })
 })
 
 module.exports = router

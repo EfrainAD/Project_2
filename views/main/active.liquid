@@ -1,10 +1,22 @@
 {% layout 'layout.liquid' %}
 {% block content %}
      <h2>Question: {{dueProblem.problem}}</h2>
-     <h2>Answer: {{dueProblem.answer}}</h2>
+     <button id="show-answer">Show Answer</button>
+     <h2 id="answer" style="display:none;">Answer: {{dueProblem.answer}}</h2>
 
      <div class="btn-group">
           <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary">Right</a>
           <a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger">Wrong</a>
       </div>
+
+      <script>
+          const answer = document.querySelector("#answer")
+          const answerButton = document.querySelector('#show-answer')
+          answerButton.addEventListener('click', () => {
+               answer.style.display = "block"
+               answerButton.style.display = 'none'
+          })
+     </script>
+
 {% endblock %}
+
