@@ -3,18 +3,16 @@
     <div class="container-md">
           <article>
                <!-- Geniral information from the DB -->
-               <h2>Origin: {{tracker.origin.owner}}</h2>
+               <h2>Creater of this problem: {{username}}</h2>
 
-               {% for collection in tracker.newCollection %}
-                    <h2>Collections: {{tracker[{{forloop.index0}}]collection.id}}</h2>
+               {% for collection in tracker.collections %}
+                    <h2>Collections {{forloop.index}}: {{collection.name}}</h2>
                {% endfor %}
                     <h2>Problem: {{tracker.problem}}</h2>
                     <h2>Answer: {{tracker.answer}}</h2>
-                    <h2>dueDate: {{tracker.dueDate}}</h2>
+                    <h2>dueDate: {{tracker.dueDate | date: '%a %b, %d, %Y'}}</h2>
                     <h2>dayJumper: {{tracker.dayJumper}}</h2>
              
-                
-            
             <!-- Buttons to do thing with this question/answer -->
             <div class="btn-group">
                 <!-- edit -->

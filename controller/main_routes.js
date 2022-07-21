@@ -3,6 +3,7 @@ const router = express.Router()
 const User = require('../models/user')
 const PersonalTracker = require('../models/personal-tracker')
 const { Collection } = require('mongoose')
+const Puzzle = require('../models/puzzle')
 
 // Home page with how many problems due.
 // Get's user Personal Tracker through user account.
@@ -72,11 +73,18 @@ router.get('/:id/wrong', async (req, res) => {
 // Show page for personal tracker as well as options
 router.get('/:id', async (req, res) => {
      const trackerId = req.params.id
-     const tracker = await PersonalTracker.findById(trackerId)
-     .populate('origin')
-     .populate('collections')
 
-     res.render('main/show', {tracker})
+     // Get the Personal tracker
+     const tracker = await PersonalTracker.findById(trackerId)
+     .populate('origin') // This is the puzzle_id. I need this to get the owner of it so I can display the owner name of the problem.)
+     .populate('collections') // This will be used to display the collection the problem belongs to.
+
+     // Getting "origin" so I can .poplulate again to get the owner's username of the puzzle.
+     const puzzle = await Puzzle.findById(tracker.origin)
+     .populate('owner')
+     const username = puzzle.owner.username
+
+     res.render('main/show', {tracker, username})
 })
 
 // DELETE - Delete a problem due, but not the problem it's self.
