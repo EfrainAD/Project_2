@@ -2,37 +2,41 @@
 {% block content %}
 
 <h1>User: {{user.username}}</h1>
-
 <h2>Your Collection</h2>
 
+<!-- Add a new collection -->
 <p><a href="/collection/new"><button>Add New Collection</button></a></p>
-    <!-- Show all collections that the user has. -->
-    {% if collection.length == 0 %}
-        <p>There are no collections yet. Please add some.</p>
-    {% else %}
-        {% for collection in collection %}
-            <p><a href="/collection/{{collection.id}}">{{collection.name}}</a>
-                    Is public? {% if collection.public %}
-                        Yes
-                    {% else %}
-                        No
-                    {% endif %}
-            </p>
-        {% endfor %}
-    {% endif %}
+    
+<!-- Show all collections that the user has. -->
+{% if collection.length == 0 %}
+    <p>There are no collections yet. Please add some.</p>
+{% else %}
+    {% for collection in collection %}
+        <p><a href="/collection/{{collection.id}}">{{collection.name}}</a>
+                Is public? {% if collection.public %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+        </p>
+    {% endfor %}
+{% endif %}
 
+<!-- Show the user Personal problem/question -->
 <h2>Your Problems Stack</h2>
+<!-- How many do you have. -->
 <h6>Number of problems: {{user.personalTracker.length}}</h6>
+<!-- Display all problems -->
 {% for problems in user.personalTracker %}    
     <p>
         {{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}} 
         Due Date: {{user.personalTracker[forloop.index0].dueDate}}
         
+        <!-- DELETE your problem. -->
         <form action="/main/delete/{{user.personalTracker[forloop.index0].id}}?_method=DELETE" method="POST">
             <input type="submit" value="X" class="btn btn-danger">
         </form>
     </p>
 {% endfor %}
-
 {% endblock %}
 

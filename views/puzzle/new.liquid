@@ -1,7 +1,8 @@
 {% layout 'layout.liquid' %} {% block content %}
 
-{% if loggedIn == true %}
+{% if loggedIn == true %} <!-- Check if user Signed in -->
 <div class="container-md">
+     <!-- forum to make your new question/answer -->
      <form action="/puzzle" method="POST">
           <fieldset>
                <legend>Create A New Problem</legend>
@@ -34,6 +35,7 @@
                value="{{collectionId}}"
                >
           </fieldset>
+          <!-- Submit Button -->
           <input 
           type="submit" 
           value="Create New Problem" 

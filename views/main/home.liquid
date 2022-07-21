@@ -1,33 +1,17 @@
 {% layout 'layout.liquid'%}
 {% block content %}
-    <h1>This is my for now home page!</h1>
+    <h1>This is my home page!</h1>
     
+    <!-- Gets the number of problems due. -->
     {% assign dueCounter = 0 %}
     {% for item in user.personalTracker %}
             {% assign dueCounter = dueCounter | plus: 1  %}
     {% endfor %}
-
+    <!-- Lets you know how many problems you have doe -->
     <h4>You have {{dueCounter}} problems due.</h4>
 
-    <!-- <a href=""><button>Let's get started!</button></a> -->
+    <!-- Displays your questions -->
     {% if dueCounter > 0 %}
         <a href="/main/go" class="btn btn-secondary">Let's get started!</a>
     {% endif %}
 {% endblock %}
-
-<!-- <p>
-            { assign days = 1 | times: 3 %} 
-            { assign days = 3 | times: 86400 %}
-            { assign today = {{problemDue.dueDate }} %}
-            {{ "now" | date: "%s" | minus: today | date: "%a, %b %d, %y" }}
-            {{ "now" | date: "%s" | plus: days | date: "%a, %b %d, %y" }}
-                | plus: days | date: "%a, %b %d, %y" 
-        </p> -->
-
-<!-- 
-     origin: 
-     collections: 
-     problem: 
-     dueDate: 
-     dayJumper: 
- -->

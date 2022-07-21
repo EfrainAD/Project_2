@@ -27,7 +27,7 @@ const config = {
 // connecting our mongoDB to mongoose
 // mongoose.connect(DATABASE_URI, config)
 
-// mongoose.connection
+// mongoose.connection // To switch to local DB
 //      .on('open', () => console.log('Connected to Mongoose'))
 //      .on('close', () => console.log('Disconnected from Mongoose'))
 //      .on('error', err => console.error(err))

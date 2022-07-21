@@ -22,6 +22,7 @@ const router = express.Router()
 router.get('/signup', (req, res) => {
     res.render('user/login_signup')
 })
+
 // one POST to make the db request
 router.post('/signup', async (req, res) => {
     console.log('this is our initial request body', req.body)
@@ -112,20 +113,22 @@ router.get('/logout', (req, res) => {
         res.redirect('/main')
     })
 })
+
+// Add a problems to your personal tracker. 
 router.post('/tracker/:puzzleId', async (req, res) => {
     const userId = req.session.userId
     const puzzleId = req.params.puzzleId
 
-
+    //  The user Doesn't select a collection, so it needs be added to a collection named none. Check if the user has one or if one needs be more for user.
     const userCollections = await Collection.find({owner: userId})
-    // .populate('collection')
+    let collectionToId = null // Id that collection have if it exist or made
 
-    let collectionToId = null
-
+    // check if collection 'none' already exist
     for (let i = 0; i < userCollections.length; i++) {
         if (userCollections[i].name === 'none')
             collectionToId = userCollections[i].id
     }
+    // If doens not make a new one named 'none'.
     if (collectionToId === null) {
         const collectionTo = await Collection.create({
             owner: userId,
@@ -135,42 +138,45 @@ router.post('/tracker/:puzzleId', async (req, res) => {
         collectionToId = collectionTo.id
     }
     
+    // Now we can focus on adding the puzzle to persoanl tracker and then attach it to the user.
     const puzzle = await Puzzle.findById(puzzleId)
    
+    // This is body for personal tracker to be created
     const body = {
         origin: puzzle.id,
-        collections: [collectionToId], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
+        collections: [collectionToId], 
         problem: puzzle.problem,
         answer: puzzle.answer,
         dueDate: Date.now(),
         dayJumper: 0
     }
     const newTracker = await PersonalTracker.create(body)
-    
-    console.log('newTracker: ', newTracker)
 
+    // User personal tracker array needs updated with the new personal tracker
     userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
     res.redirect('/user')
 })
 
+// Grab all puzzles from the collection and to personal counter.
 router.post('/:collectionId', async (req, res) => {
     const puzzleSourceCollection = req.params.collectionId // Collection to get the problems
-    const userId = req.session.userId               // User who requested
-    const newCollectionName = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it. //TODO: Need check later if that a good idea or laway make a new one regardless.
-    const collectionIfExists = await Collection.findOne({owner: userId, name: newCollectionName})//.lean()
-    console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    console.log(collectionIfExists)
-    if (!collectionIfExists) { // if collection wasn't found, will be null. Do this stuff.
+    const userId = req.session.userId               
+    const newCollectionName = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it.(Comes from the forum.) 
+    
+    // Grab any collection the user has with the same name as "newCollectionName" that was gottone from req.body
+    const collectionIfExists = await Collection.findOne({owner: userId, name: newCollectionName})
+    
+    // if user doesn't have a collection by that name, make one.
+    if (!collectionIfExists) { 
         const newCollection = await Collection.create({owner: userId, name: newCollectionName})
         const collectionFrom = await Collection.findById(puzzleSourceCollection)
         .populate('owner')
         .populate('puzzle')
-        console.log('-------------------------------------------------------',
-        collectionFrom.puzzle)
+        
+        // Check if aultherrized
         if ((collectionFrom.public === true) || (userId == collectionFrom.owner.id) ) {
-            console.log('************************************')
+            // Grab all puzzles from the collection and update to the new colleciton
             for (let i = 0; i < collectionFrom.puzzle.length; i++) {
-                console.log('public?',collectionFrom.puzzle[i].public)
                 if (collectionFrom.puzzle[i].public) {                  
                     Collection.findByIdAndUpdate({_id: newCollection._id}, {$push: {puzzle: collectionFrom.puzzle[i]}},{new: true},function (err,model){
                         if (err) {
@@ -178,53 +184,46 @@ router.post('/:collectionId', async (req, res) => {
                         }
                         console.log('model', model)
                     })
+
                     // Copy problem from other users collection and add that to the users personalTracker (That will give the due date for when it is due.)
                     Collection.findById(newCollection._id)
                     .then(respons => {
                         console.log(respons)
                     })
                     
-                    console.log('==============================\nollectionFrom.puzzle[i]', collectionFrom.puzzle[i]) 
                     const body = {
                         origin: collectionFrom.puzzle[i].id,
-                        collections: [newCollection.id], //This not being a $push: could be a problem. // sinse this the first time made might be fine but I need check for posable bugs with this.
+                        collections: [newCollection.id], 
                         problem: collectionFrom.puzzle[i].problem,
                         answer: collectionFrom.puzzle[i].answer,
                         dueDate: Date.now(),
                         dayJumper: 0
                     }
                     const newTracker = await PersonalTracker.create(body)
-                    
-                    console.log('newTracker: ', newTracker)
 
+                    // Add new personal tracker to the user.
                     userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
 
                     User.findById(userId).populate('personalTracker')
-                    .then(user => {
-                        console.log('update after newTracker: ', user)
-                    })
-                    
-
                 }
             }
         }
         else {
             res.render('user/accessDenied')
         }
-
     } 
     res.redirect('/user') 
 })
 
+// User Home Page
 router.get('/', async (req, res) => {
+    // Check if looged in or no point in this page other then display badlly. 
     if (req.session.loggedIn === true) {
         const userId = req.session.userId
         const user = await User.findById( userId )
         .populate('personalTracker')
-        // .populate({path:'personalTracker', options: { sort: {duedate: 1}} })
-        // console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
-    
-    
+        
+        // Get user's Collection they own to display.
         Collection.find({owner: userId})
             .then (collection => {
                 res.render('user/home', { user, collection})
@@ -236,7 +235,6 @@ router.get('/', async (req, res) => {
     } else {
         res.render('user/accessDenied')
     }
-
 })
 
 ///////////////////////////////////////

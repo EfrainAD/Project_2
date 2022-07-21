@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="container-md">
+    <!-- Edit form that display the corrent data so you can edit collection -->
     <form action="/collection/{{collection._id}}?_method=PUT" method="POST">
         <fieldset>
             <legend>Edit This {{collection.name}}</legend>
@@ -24,8 +25,10 @@
             >
         </fieldset>
         <div class="btn-group">
+          <!-- Submit Edit Button -->
             <input type="submit" value="Edit {{ collection.name }}" class="btn btn-success">
             
+          <!-- A back link to collections -->
             <a href="/collection" class="btn btn-warning">Go Back</a>
         </div>
     </form>

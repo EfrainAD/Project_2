@@ -34,7 +34,7 @@ app.use(
 	session({
 		secret: process.env.SECRET,
 		store: MongoStore.create({
-			// mongoUrl: process.env.DATABASE_URI
+			// mongoUrl: process.env.DATABASE_URI // To switch to local DB
 			mongoUrl: process.env.MONGODB_URI
 		}),
 		saveUninitialized: true,
@@ -52,7 +52,6 @@ app.use('/puzzle', puzzleRoutes)
 
 // localhost:8000/
 app.get('/', (req, res) => {
-	// res.send('your server is running, better go catch it <a href="/main">Go to Home Page</a>')
 	res.redirect('/main')
 })
 
@@ -61,6 +60,6 @@ app.get('/', (req, res) => {
 ////////////////////////////////////////////
 const PORT = process.env.PORT
 app.listen(PORT || 3000, () => {
-// app.listen(PORT, () => {
+// app.listen(PORT, () => { // To switch to local DB
 	console.log(`app is listening on port: ${PORT}`)
 })

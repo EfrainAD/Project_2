@@ -3,36 +3,36 @@ const router = express.Router()
 const User = require('../models/user')
 const PersonalTracker = require('../models/personal-tracker')
 
-
+// Home page with how many problems due.
+// Get's user Personal Tracker through user account.
 router.get('/', async (req, res) => {
      const user = await User.findById(req.session.userId)
      .populate('personalTracker')
-     // console.log('user.personalTracker[2].problem: ', user.personalTracker[2].problem)
+     
      res.render('main/home', {user})
 })
 
+// When you are going through the problems you're studing
 router.get('/go', async (req, res) => {
-     const user = await User.findById(req.session.userId)//.select('personalTracker')
-     // .populate({path:'personalTracker', options: { sort: {duedate: 1}} })
+     const user = await User.findById(req.session.userId)
      .populate('personalTracker').sort([['dueDate', -1]])
 
+     // Need to grab the personal tracker with the early due date
+     // TODO Clean Up. This should be more simple
      const trackerArray = []
-
-     // console.log("user in /go page. lenght", user.length)
-
      for (let i = 0; i < user.personalTracker.length; i++) {
           trackerArray.push(user.personalTracker[i])
      }
-     trackerArray.sort((a, b) => {
+     trackerArray.sort((a, b) => { 
           return a.dueDate - b.dueDate;
      })
+     // If stament to pervent a crash if you have no personal tracker.
+     // grabs the first one becuase you only use one at a time.
      if(trackerArray[0]._id) {
           const trackerOne = trackerArray[0]._id
-          console.log("user in /go page. trackerOne.id ", trackerOne)
 
           const dueProblem = await PersonalTracker.findById(trackerOne)
           console.log('nextPersonalTracker: ', dueProblem)
-
 
           res.render('main/active', {dueProblem})
      } else {
@@ -41,10 +41,13 @@ router.get('/go', async (req, res) => {
      
 })
 
+// What happens when you clicked it right.
 router.get('/:id/right', async (req, res) => {
      const id = req.params.id
      const tracker = await PersonalTracker.findById(id)
 
+     // Change the next due date to something longer.
+     // line 52,  convert day into ms then adds to dueDate to add that many days.
      tracker.dayJumper++ 
      tracker.dueDate = new Date(+new Date(tracker.dueDate) + tracker.dayJumper*24*60*60*1000)
      tracker.save();
@@ -52,22 +55,20 @@ router.get('/:id/right', async (req, res) => {
      res.redirect('/main/go')
 })
 
+// What happens when you clicked it wrong.
 router.get('/:id/wrong', async (req, res) => {
-     // const tracker = await PersonalTracker.findById(req.params.id)
-     // console.log(PersonalTracker)
      const id = req.params.id
      const tracker = await PersonalTracker.findById(id)
 
-     // console.log('personalTracker before edit in /wrong ', tracker)
+     // set's due date to 10min later. resets when you will see your problem varible back to the starting point.
      tracker.dueDate = Date.now() + (10*60000)
      tracker.dayJumper = 0
      tracker.save();
-     console.log('personalTracker after edit in /wrong ', tracker)
 
      res.redirect('/main/go')
 })
 
-// DELETE - Delete
+// DELETE - Delete a problem due, but not the problem it's self.
 router.delete('/delete/:id', (req, res) => {
      const trackerId = req.params.id
  

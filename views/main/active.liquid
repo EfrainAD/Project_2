@@ -1,14 +1,19 @@
 {% layout 'layout.liquid' %}
 {% block content %}
+     <!-- Ask the question -->
      <h2>Question: {{dueProblem.problem}}</h2>
+
+     <!-- Display the answer when you click "Show Answer" -->
      <button id="show-answer">Show Answer</button>
      <h2 id="answer" style="display:none;">Answer: {{dueProblem.answer}}</h2>
 
+     <!-- Mark the answer right or wrong -->
      <div class="btn-group">
           <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary">Right</a>
           <a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger">Wrong</a>
       </div>
 
+      <!-- This make the answer unhidden. -->
       <script>
           const answer = document.querySelector("#answer")
           const answerButton = document.querySelector('#show-answer')

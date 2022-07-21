@@ -3,7 +3,9 @@ const router = express.Router()
 const Collection = require('../models/collection')
 const Puzzle = require('../models/puzzle')
 
-// DELETE - Delete
+// DELETE - Delete collection
+// Find collection by Id and remove it 
+// IF user is is the owner of collection
 router.delete('/delete/:id', (req, res) => {
     const collectionId = req.params.id
     const userId = req.session.userId
@@ -23,11 +25,10 @@ router.delete('/delete/:id', (req, res) => {
 })
 
 // GET - Index
-// localhost:8000/collection
+// Show all public collections. 
 router.get('/', (req, res) => {
-    Collection.find({}).then(col => {console.log(col)})
     Collection.find({public: true})
-        .populate('owner', 'username')
+        .populate('owner', 'username') // Just pass the owner.username
         .then(collection => {
             res.render('collection/index', { collection })
         })
@@ -36,15 +37,14 @@ router.get('/', (req, res) => {
         })
 })
 
-// GET route for displaying my form for create
+// GET Displays forum for new collection and Check autherized in liquid.
 router.get('/new', (req, res) => {
-    console.log(`NOTE: ${req.session.username} ${req.session.loggedIn}`)
     const username = req.session.username
     const loggedIn = req.session.loggedIn
     res.render('collection/new', { username, loggedIn }) 
 })
 
-// GET route for displaying an update form
+// GET Displaying an update form for collection with information filled in.
 router.get('/:id/edit', (req, res) => {
     const collectionId = req.params.id
     const userId = req.session.userId
@@ -52,10 +52,6 @@ router.get('/:id/edit', (req, res) => {
     Collection.findById(collectionId)
         .populate('owner')
         .then(collection => {
-            const ownerId = collection.owner.id
-            console.log('userId: ', userId)
-            console.log('ownerId: ', ownerId)
-            console.log('collection.owner.id: ', collection.owner.id)
             if (collection.owner.id == userId) {
                 res.render('collection/edit', { collection })
             } else {
@@ -66,55 +62,34 @@ router.get('/:id/edit', (req, res) => {
         })
 })
 
-// GET - Show
-// localhost:3000/fruits/:id <- change with the id being passed in
+// GET - Show one Collection with options on what to do with it.
 router.get('/:id', async (req, res) => {
     const collectionId = req.params.id
     const userId = req.session.userId
-    const username = req.session.username
-    
-    const puzzle = await Puzzle.find({collections: collectionId, public: true})
-    const puzzlePrivate = await Puzzle.find({collections: collectionId, public: false}) // , owner: userId
-    
-    console.log('Puzzle.find({collections: collectionId, public: true}): ', puzzle)
-    console.log('Puzzle private: ', puzzlePrivate)
 
     Collection.findById(collectionId)
-        .populate('puzzle') //Not owrk Why????
+        .populate('puzzle') 
         .populate('owner')
-        // .populate('owner','username')
-        // send back some json
         .then(collection => {
-            // res.json(collection)
-            console.log('collection in the .then ', collection)
             if ((collection.public === true) || (collection.owner.id == userId) )  {
-                console.log('This is req.session: ', req.session)
-                console.log('This is userId: ', userId)
-                console.log('This is collection.owner.id: ', collection.owner.id)
                 res.render('collection/show', { collection, userId})
             }
             else {
                 res.render('user/accessDenied')
             }
-
-            
         })
         .catch(err => {
             res.json(err)
         })
 })
 
-// POST - Create
+// POST - Create a collection from the POST body passed from forum.
 router.post('/', (req, res) => {
-    
     req.body.owner = req.session.userId
     req.body.public = req.body.public === 'on'
     
-    console.log(req.body)
     Collection.create(req.body)
         .then(collection => {
-            console.log(collection)
-            // res.json(fruit)
             res.redirect('/collection')
         })
         .catch(err => {
@@ -122,8 +97,7 @@ router.post('/', (req, res) => {
         })
 })
 
-// PUT - Update //NOT PAGE
-// localhost:3000/fruits/:id
+// PUT - Update your collection  //NOT PAGE
 router.put('/:id', (req, res) => {
     const collectionId = req.params.id
     const userId = req.session.userId
@@ -132,6 +106,7 @@ router.put('/:id', (req, res) => {
     Collection.findById(collectionId)
         .populate('owner')
         .then(collection => {
+            // check authentification
             if (userId == collection.owner.id) {
                 collection.findByIdAndUpdate(collectionId, req.body, { new: true })
                 res.redirect(`/collection/${collection._id}`)
