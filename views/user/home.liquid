@@ -30,7 +30,7 @@
 {% for problems in user.personalTracker %}    
     <p>
         {{forloop.index}}: 
-        <a href="/main/view">
+        <a href="/main/{{user.personalTracker[forloop.index0].id}}">
             {{user.personalTracker[forloop.index0].problem}} 
             Due Date: {{user.personalTracker[forloop.index0].dueDate}}
         </a>

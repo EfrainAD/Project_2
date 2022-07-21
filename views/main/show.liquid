@@ -1,0 +1,29 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+    <div class="container-md">
+          <article>
+               <!-- Geniral information from the DB -->
+               <h2>Origin: {{tracker.origin.owner}}</h2>
+
+               {% for collection in tracker.newCollection %}
+                    <h2>Collections: {{tracker[{{forloop.index0}}]collection.id}}</h2>
+               {% endfor %}
+                    <h2>Problem: {{tracker.problem}}</h2>
+                    <h2>Answer: {{tracker.answer}}</h2>
+                    <h2>dueDate: {{tracker.dueDate}}</h2>
+                    <h2>dayJumper: {{tracker.dayJumper}}</h2>
+             
+                
+            
+            <!-- Buttons to do thing with this question/answer -->
+            <div class="btn-group">
+                <!-- edit -->
+                <a href="/{{tracker.id}}" class="btn btn-primary">Edit</a>
+                <!-- delete -->
+                <form action="/{{tracker.id}}?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </div>
+        </article>
+    </div>
+{% endblock %}

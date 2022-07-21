@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user')
 const PersonalTracker = require('../models/personal-tracker')
+const { Collection } = require('mongoose')
 
 // Home page with how many problems due.
 // Get's user Personal Tracker through user account.
@@ -66,6 +67,16 @@ router.get('/:id/wrong', async (req, res) => {
      tracker.save();
 
      res.redirect('/main/go')
+})
+
+// Show page for personal tracker as well as options
+router.get('/:id', async (req, res) => {
+     const trackerId = req.params.id
+     const tracker = await PersonalTracker.findById(trackerId)
+     .populate('origin')
+     .populate('collections')
+
+     res.render('main/show', {tracker})
 })
 
 // DELETE - Delete a problem due, but not the problem it's self.
