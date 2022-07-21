@@ -4,7 +4,6 @@
         <article>
             <h2>Name: {{collection.name}}</h2>
             <h2>Owner: {{collection.owner.username}}</h2>
-            <!-- <h2>puzzle: {{puzzle}}</h2> -->
             <h3>
                 {% if collection.public %}
                     This collection is public.
@@ -12,64 +11,7 @@
                     This collection is private.
                 {% endif %}
             </h3>
-            <!-- <h1>Have look: {{collection}}</h1> -->
-            <!-- {
-  _id: new ObjectId("62d6bd55fd6616932c31c03e"),
-  owner: {
-    _id: new ObjectId("62d6b974c83d950ccb111218"),
-    username: 'userThree'
-  },
-  name: 'New normal',
-  public: false,
-  puzzle: [ // Make plural
-    {
-      _id: new ObjectId("62d6bd66fd6616932c31c04d"),
-      owner: new ObjectId("62d6b974c83d950ccb111218"),
-      collections: [Array],
-      public: true,
-      problem: 'public',
-      createdAt: 2022-07-19T14:19:18.636Z,
-      updatedAt: 2022-07-19T14:19:18.636Z,
-      __v: 0
-    },
-    {
-      _id: new ObjectId("62d6bd6dfd6616932c31c054"),
-      owner: new ObjectId("62d6b974c83d950ccb111218"),
-      collections: [Array],
-      public: true,
-      problem: '2',
-      createdAt: 2022-07-19T14:19:25.642Z,
-      updatedAt: 2022-07-19T14:19:25.642Z,
-      __v: 0
-    },
-    {
-      _id: new ObjectId("62d6bd73fd6616932c31c05b"),
-      owner: new ObjectId("62d6b974c83d950ccb111218"),
-      collections: [Array],
-      public: false,
-      problem: 'private',
-      createdAt: 2022-07-19T14:19:31.770Z,
-      updatedAt: 2022-07-19T14:19:31.770Z,
-      __v: 0
-    },
-    {
-      _id: new ObjectId("62d6bd7cfd6616932c31c062"),
-      owner: new ObjectId("62d6b974c83d950ccb111218"),
-      collections: [Array],
-      public: false,
-      problem: 'private three',
-      createdAt: 2022-07-19T14:19:40.697Z,
-      updatedAt: 2022-07-19T14:19:40.697Z,
-      __v: 0
-    }
-  ],
-  createdAt: 2022-07-19T14:19:01.806Z,
-  updatedAt: 2022-07-19T14:19:40.710Z,
-  __v: 0
-} -->
-            <!-- {% for puzzle in collection.puzzle %}
-               <h4><a href="/">Problem: {{puzzle.problem}}</a></h4>
-            {% endfor %} -->
+        <!-- puzzle: [ // Make plural -->
             
             <!-- We are getting the number of problems/puzzle that are public and private so we can display to the user how many he has of each. -->
             <!-- public -->
@@ -139,15 +81,5 @@
                 <input type="submit" class="btn btn-success" value="Add All Problems to my Problem set" />
             </form>
         </div> 
-        <!-- 
-        {% if fruit.comments.length > 0 %}
-        <div class="container-sm justify-content-center">
-            <div class="col-md-8 col-lg-6" >
-                {% for comment in fruit.comments %}
-                {% render '../comment.liquid' comment: comment, userId: userId, fruit: fruit, username: username%}
-                {% endfor %}
-            </div>
-        </div> -->
-        {% endif %}
     </div>
 {% endblock %}

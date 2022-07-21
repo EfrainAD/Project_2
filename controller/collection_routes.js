@@ -72,6 +72,7 @@ router.get('/:id', async (req, res) => {
     const collectionId = req.params.id
     const userId = req.session.userId
     const username = req.session.username
+    
     const puzzle = await Puzzle.find({collections: collectionId, public: true})
     const puzzlePrivate = await Puzzle.find({collections: collectionId, public: false}) // , owner: userId
     
@@ -80,7 +81,8 @@ router.get('/:id', async (req, res) => {
 
     Collection.findById(collectionId)
         .populate('puzzle') //Not owrk Why????
-        .populate('owner','username')
+        .populate('owner')
+        // .populate('owner','username')
         // send back some json
         .then(collection => {
             // res.json(collection)
@@ -89,7 +91,7 @@ router.get('/:id', async (req, res) => {
                 console.log('This is req.session: ', req.session)
                 console.log('This is userId: ', userId)
                 console.log('This is collection.owner.id: ', collection.owner.id)
-                res.render('collection/show', { collection, puzzle, puzzlePrivate, userId, username})
+                res.render('collection/show', { collection, userId})
             }
             else {
                 res.render('user/accessDenied')

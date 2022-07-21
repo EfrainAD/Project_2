@@ -29,14 +29,21 @@ router.get('/:id/wrong', async (req, res) => {
      // console.log(PersonalTracker)
      const id = req.params.id
      const tracker = await PersonalTracker.findById(id)
+
+     // nowDate = new Date.now()
+     // inTen = nowDate.setDate(nowDate.getMinutes()+10)  
      
-     console.log('HI, id before edit in /wrong ', id)
+     // console.log('HI, in /wrong nowDate is ', nowDate)
+     // console.log('HI, in /wrong nowDate is ', inTen)
+     // console.log('HI, id before edit in /wrong ', id)
      console.log('personalTracker before edit in /wrong ', tracker)
-     user.dueDate = Date.now()
-     // tracker.dayJumper = 0
-     // console.log('personalTracker before edit in /wrong ', tracker)
+     // tracker.dueDate = new Date( (Date.now()).getTime() + 10*60000);
+     // tracker.dueDate = new Date(Date.now() + 10*60000);
+     tracker.dueDate = Date.now() + 10*60000
+     tracker.dayJumper = 0
      // I think I need this but I think .then not. Need test.
-     // tracker.save();
+     tracker.save();
+     console.log('personalTracker after edit in /wrong ', tracker)
 
      res.redirect('/main/go')
 })
