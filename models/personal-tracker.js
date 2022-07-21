@@ -16,6 +16,10 @@ const trackerSchema = new Schema({
           type: String,
           required: true
      },
+     answer: {
+          type: String,
+          required: true
+     },
      dueDate: {
           type: Date,
           repuired: true,

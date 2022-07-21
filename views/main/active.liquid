@@ -1,38 +1,10 @@
 {% layout 'layout.liquid' %}
 {% block content %}
      <h2>Question: {{dueProblem.problem}}</h2>
+     <h2>Answer: {{dueProblem.answer}}</h2>
 
      <div class="btn-group">
           <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary">Right</a>
           <a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger">Wrong</a>
       </div>
-
 {% endblock %}
-
-<!-- <p>This are in your collections.</p>
-            {% for collection in user.personalTracker[0].collections %}
-               <p>{{collection}}</p>
-            {% endfor %} -->
-            <!--  
-     collections: [{
-          type: Schema.Types.ObjectId, 
-          ref: 'Collection'
-     }],
-     problem: {
-          type: String,
-          required: true
-     },
-     dueDate: {
-          type: Date,
-          repuired: true,
-          default: Date.now()
-	},
-     dayJumper: {
-          type: Number,
-          required: true,
-          default: 0
-     }
-     },{
-          timestamps: true,
-     }
-) -->

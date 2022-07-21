@@ -10,8 +10,9 @@
     <h4>You have {{dueCounter}} problems due.</h4>
 
     <!-- <a href=""><button>Let's get started!</button></a> -->
-    <a href="/main/go" class="btn btn-secondary">Let's get started!</a>
-        
+    {% if dueCounter > 0 %}
+        <a href="/main/go" class="btn btn-secondary">Let's get started!</a>
+    {% endif %}
 {% endblock %}
 
 <!-- <p>

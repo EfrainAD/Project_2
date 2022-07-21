@@ -24,15 +24,20 @@ router.get('/go', async (req, res) => {
      }
      trackerArray.sort((a, b) => {
           return a.dueDate - b.dueDate;
-      })
-     const trackerOne = trackerArray[0]._id
-     console.log("user in /go page. trackerOne.id ", trackerOne)
+     })
+     if(trackerArray[0]._id) {
+          const trackerOne = trackerArray[0]._id
+          console.log("user in /go page. trackerOne.id ", trackerOne)
 
-     const dueProblem = await PersonalTracker.findById(trackerOne)
-      console.log('nextPersonalTracker: ', dueProblem)
+          const dueProblem = await PersonalTracker.findById(trackerOne)
+          console.log('nextPersonalTracker: ', dueProblem)
 
 
-     res.render('main/active', {dueProblem})
+          res.render('main/active', {dueProblem})
+     } else {
+          res.redirect('/main')
+     }
+     
 })
 
 router.get('/:id/right', async (req, res) => {

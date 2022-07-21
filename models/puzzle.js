@@ -22,6 +22,10 @@ const puzzleSchema = new Schema(
           problem: {
                type: String,
                required: true
+          },
+          answer: {
+               type: String,
+               required: true
           }
 	},
 	{
