@@ -25,7 +25,7 @@
 <h6>Number of problems: {{user.personalTracker.length}}</h6>
 {% for problems in user.personalTracker %}
             
-    <p>{{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}}</p>
+    <p>{{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}} Due Date: {{user.personalTracker[forloop.index0].dueDate}}</p>
 {% endfor %}
 
 {% endblock %}

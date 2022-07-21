@@ -1,10 +1,10 @@
 {% layout 'layout.liquid' %}
 {% block content %}
-     <h2>Question: {{user.personalTracker[0].problem}}</h2>
+     <h2>Question: {{dueProblem.problem}}</h2>
 
      <div class="btn-group">
-          <a href="/main/{{user.personalTracker[0].id}}/right" class="btn btn-primary">Right</a>
-          <a href="/main/{{user.personalTracker[0].id}}/wrong" class="btn btn-danger">Wrong</a>
+          <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary">Right</a>
+          <a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger">Wrong</a>
       </div>
 
 {% endblock %}

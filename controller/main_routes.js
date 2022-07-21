@@ -11,13 +11,28 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/go', async (req, res) => {
-     const user = await User.findById(req.session.userId)
-     .populate('personalTracker')
-     // console.log('user.personalTracker[2].problem: ', user.personalTracker[2].problem)
+     const user = await User.findById(req.session.userId)//.select('personalTracker')
+     // .populate({path:'personalTracker', options: { sort: {duedate: 1}} })
+     .populate('personalTracker').sort([['dueDate', -1]])
 
-     console.log("This what should be passed to /go page. ", user.personalTracker[0])
+     const trackerArray = []
 
-     res.render('main/active', {user})
+     // console.log("user in /go page. lenght", user.length)
+
+     for (let i = 0; i < user.personalTracker.length; i++) {
+          trackerArray.push(user.personalTracker[i])
+     }
+     trackerArray.sort((a, b) => {
+          return a.dueDate - b.dueDate;
+      })
+     const trackerOne = trackerArray[0]._id
+     console.log("user in /go page. trackerOne.id ", trackerOne)
+
+     const dueProblem = await PersonalTracker.findById(trackerOne)
+      console.log('nextPersonalTracker: ', dueProblem)
+
+
+     res.render('main/active', {dueProblem})
 })
 
 router.get('/:id/right', async (req, res) => {

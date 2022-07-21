@@ -325,6 +325,7 @@ router.get('/', async (req, res) => {
     const userId = req.session.userId
     const user = await User.findById( userId )
     .populate('personalTracker')
+    // .populate({path:'personalTracker', options: { sort: {duedate: 1}} })
     // console.log('Hi user has this showing up as there personal Tracker. It should be there. ', user.personalTracker)
 
 
