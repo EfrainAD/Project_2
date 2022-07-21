@@ -32,7 +32,7 @@ router.get('/:id/wrong', async (req, res) => {
      
      console.log('HI, id before edit in /wrong ', id)
      console.log('personalTracker before edit in /wrong ', tracker)
-     // user.dueDate = Date.now()
+     user.dueDate = Date.now()
      // tracker.dayJumper = 0
      // console.log('personalTracker before edit in /wrong ', tracker)
      // I think I need this but I think .then not. Need test.
