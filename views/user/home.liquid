@@ -29,8 +29,12 @@
 <!-- Display all problems -->
 {% for problems in user.personalTracker %}    
     <p>
-        {{forloop.index0}}: {{user.personalTracker[forloop.index0].problem}} 
-        Due Date: {{user.personalTracker[forloop.index0].dueDate}}
+        {{forloop.index}}: 
+        <a href="/main/view">
+            {{user.personalTracker[forloop.index0].problem}} 
+            Due Date: {{user.personalTracker[forloop.index0].dueDate}}
+        </a>
+        
         
         <!-- DELETE your problem. -->
         <form action="/main/delete/{{user.personalTracker[forloop.index0].id}}?_method=DELETE" method="POST">
