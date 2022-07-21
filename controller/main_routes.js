@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
 // When you are going through the problems you're studing
 router.get('/go', async (req, res) => {
      const user = await User.findById(req.session.userId)
-     .populate('personalTracker').sort([['dueDate', -1]])
+     .populate('personalTracker') //.sort([['dueDate', -1]]) // Not work
 
      // Need to grab the personal tracker with the early due date
      // TODO Clean Up. This should be more simple

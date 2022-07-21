@@ -1,5 +1,13 @@
 {% layout 'layout.liquid' %}
 {% block content %}
+     
+     
+     <!-- Check to see if the Problem is due yet. -->
+     <!-- if YES Desplay the page. -->
+     <!-- if NO display a "No problems are due right now." -->
+     {% capture nowunix %}{{'now' | date: '%s'}}{% endcapture %}
+     {% capture posttime %}{{dueProblem.dueDate | date: '%s'}}{% endcapture %}
+     {% if posttime < nowunix %}     
      <!-- Ask the question -->
      <h2>Question: {{dueProblem.problem}}</h2>
 
@@ -12,7 +20,13 @@
           <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary">Right</a>
           <a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger">Wrong</a>
       </div>
-
+      <!-- IF ELSE -->
+      {% else %}
+          <h1>There are no problems doe right now.</h1>
+          <a href="/collection">Go Look for some in collections!</a><br>
+          <a href="/collection/new">Make a new collection!</a><br>
+          <a href="/user">Go to my account to add problems from my colelctions</a><br>
+     {% endif %}
       <!-- This make the answer unhidden. -->
       <script>
           const answer = document.querySelector("#answer")
