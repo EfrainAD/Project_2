@@ -18,7 +18,7 @@
                 <!-- edit -->
                 <a href="/{{tracker.id}}" class="btn btn-primary">Edit</a>
                 <!-- delete -->
-                <form action="/{{tracker.id}}?_method=DELETE" method="POST">
+                <form action="/main/delete/{{tracker.id}}?_method=DELETE" method="POST">
                     <input type="submit" value="Delete" class="btn btn-danger">
                 </form>
             </div>
