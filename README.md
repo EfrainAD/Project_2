@@ -1,5 +1,8 @@
 # Project 2
 
+## Deployment
+https://gostudies.herokuapp.com/collection
+
 ## Overview
 
 This second project is your first foray into **building a full-stack application.** You'll be **building a Node app,** which means you'll learn about what it takes to build a functional application from the ground up yourself.
