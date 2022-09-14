@@ -70,6 +70,21 @@ router.get('/:id/wrong', async (req, res) => {
      res.redirect('/main/go')
 })
 
+//Page: Edit forum
+router.get('/:trackerId/edit', (req, res) => {
+     const trackerId = req.params.trackerId
+     const ownerId = req.session.userId
+     
+     Puzzle.findById(trackerId)
+     .then(puzzle => {
+         if (trackerId == puzzle.owner.id) {
+             res.render('puzzle/edit', {puzzle})
+         } else {
+             res.render('user/accessDenied')
+         }
+     })
+ })
+
 // Show page for personal tracker as well as options
 router.get('/:id', async (req, res) => {
      const trackerId = req.params.id
