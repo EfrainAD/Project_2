@@ -1,4 +1,5 @@
-{% layout 'layout.liquid' %} {% block content %}
+{% layout 'layout.liquid', loggedIn: loggedIn %}
+{% block content %}
 
 {% if loggedIn == true %}
 <div class="container-md">

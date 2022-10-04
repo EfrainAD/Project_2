@@ -233,7 +233,7 @@ router.get('/', async (req, res) => {
                 res.json({ error })
             })    
     } else {
-        res.render('user/accessDenied')
+        res.redirect('user/login')
     }
 })
 

@@ -27,10 +27,12 @@ router.delete('/delete/:id', (req, res) => {
 // GET - Index
 // Show all public collections. 
 router.get('/', (req, res) => {
+    const loggedIn = req.session.loggedIn
+
     Collection.find({public: true})
         .populate('owner', 'username') // Just pass the owner.username
         .then(collection => {
-            res.render('collection/index', { collection })
+            res.render('collection/index', { collection, loggedIn })
         })
         .catch(err => {
             res.json(err)
@@ -47,13 +49,14 @@ router.get('/new', (req, res) => {
 // GET Displaying an update form for collection with information filled in.
 router.get('/:id/edit', (req, res) => {
     const collectionId = req.params.id
-    const userId = req.session.userId
+    const {userId, loggedIn} = req.session
     
     Collection.findById(collectionId)
         .populate('owner')
         .then(collection => {
             if (collection.owner.id == userId) {
-                res.render('collection/edit', { collection })
+    const loggedIn = req.session.loggedIn
+                res.render('collection/edit', { collection, loggedIn })
             } else {
                 res.render('user/accessDenied')}
         })
@@ -65,14 +68,14 @@ router.get('/:id/edit', (req, res) => {
 // GET - Show one Collection with options on what to do with it.
 router.get('/:id', async (req, res) => {
     const collectionId = req.params.id
-    const userId = req.session.userId
+    const {userId, loggedIn} = req.session
 
     Collection.findById(collectionId)
         .populate('puzzle') 
         .populate('owner')
         .then(collection => {
             if ((collection.public === true) || (collection.owner.id == userId) )  {
-                res.render('collection/show', { collection, userId})
+                res.render('collection/show', { collection, userId, loggedIn})
             }
             else {
                 res.render('user/accessDenied')

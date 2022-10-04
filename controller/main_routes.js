@@ -8,14 +8,16 @@ const Puzzle = require('../models/puzzle')
 // Home page with how many problems due.
 // Get's user Personal Tracker through user account.
 router.get('/', async (req, res) => {
+     const loggedIn = req.session.loggedIn
      const user = await User.findById(req.session.userId)
      .populate('personalTracker')
      
-     res.render('main/home', {user})
+     res.render('main/home', {user, loggedIn})
 })
 
 // When you are going through the problems you're studing
 router.get('/go', async (req, res) => {
+     const loggedIn = req.session.loggedIn
      const user = await User.findById(req.session.userId)
      .populate('personalTracker') //.sort([['dueDate', -1]]) // Not work
 
@@ -30,13 +32,13 @@ router.get('/go', async (req, res) => {
      })
      // If stament to pervent a crash if you have no personal tracker.
      // grabs the first one becuase you only use one at a time.
-     if(trackerArray[0]._id) {
+     if(trackerArray[0]?._id) {
           const trackerOne = trackerArray[0]._id
 
           const dueProblem = await PersonalTracker.findById(trackerOne)
           console.log('nextPersonalTracker: ', dueProblem)
 
-          res.render('main/active', {dueProblem})
+          res.render('main/active', {dueProblem, loggedIn})
      } else {
           res.redirect('/main')
      }
