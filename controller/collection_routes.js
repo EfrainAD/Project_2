@@ -41,8 +41,7 @@ router.get('/', (req, res) => {
 
 // GET Displays forum for new collection and Check autherized in liquid.
 router.get('/new', (req, res) => {
-    const username = req.session.username
-    const loggedIn = req.session.loggedIn
+    const {username, loggedIn} = req.session
     res.render('collection/new', { username, loggedIn }) 
 })
 
@@ -55,7 +54,7 @@ router.get('/:id/edit', (req, res) => {
         .populate('owner')
         .then(collection => {
             if (collection.owner.id == userId) {
-    const loggedIn = req.session.loggedIn
+                // const loggedIn = req.session.loggedIn
                 res.render('collection/edit', { collection, loggedIn })
             } else {
                 res.render('user/accessDenied')}

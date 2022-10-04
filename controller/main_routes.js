@@ -76,11 +76,12 @@ router.get('/:id/wrong', async (req, res) => {
 router.get('/:trackerId/edit', (req, res) => {
      const trackerId = req.params.trackerId
      const ownerId = req.session.userId
+     const loggedIn = req.session.loggedIn
      
      Puzzle.findById(trackerId)
      .then(puzzle => {
          if (trackerId == puzzle.owner.id) {
-             res.render('puzzle/edit', {puzzle})
+             res.render('puzzle/edit', {puzzle, loggedIn})
          } else {
              res.render('user/accessDenied')
          }
@@ -90,6 +91,7 @@ router.get('/:trackerId/edit', (req, res) => {
 // Show page for personal tracker as well as options
 router.get('/:id', async (req, res) => {
      const trackerId = req.params.id
+     const loggedIn = req.session.loggedIn
 
      // Get the Personal tracker
      const tracker = await PersonalTracker.findById(trackerId)
@@ -101,7 +103,7 @@ router.get('/:id', async (req, res) => {
      .populate('owner')
      const username = puzzle.owner.username
 
-     res.render('main/show', {tracker, username})
+     res.render('main/show', {tracker, username, loggedIn})
 })
 
 // DELETE - Delete a problem due, but not the problem it's self.

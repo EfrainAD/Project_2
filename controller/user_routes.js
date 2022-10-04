@@ -160,7 +160,7 @@ router.post('/tracker/:puzzleId', async (req, res) => {
 // Grab all puzzles from the collection and to personal counter.
 router.post('/:collectionId', async (req, res) => {
     const puzzleSourceCollection = req.params.collectionId // Collection to get the problems
-    const userId = req.session.userId               
+    const {userId, loggedIn} = req.session
     const newCollectionName = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it.(Comes from the forum.) 
     
     // Grab any collection the user has with the same name as "newCollectionName" that was gottone from req.body
@@ -209,7 +209,7 @@ router.post('/:collectionId', async (req, res) => {
             }
         }
         else {
-            res.render('user/accessDenied')
+            res.render('user/accessDenied', {loggedIn})
         }
     } 
     res.redirect('/user') 
@@ -219,14 +219,14 @@ router.post('/:collectionId', async (req, res) => {
 router.get('/', async (req, res) => {
     // Check if looged in or no point in this page other then display badlly. 
     if (req.session.loggedIn === true) {
-        const userId = req.session.userId
+        const {userId, loggedIn} = req.session
         const user = await User.findById( userId )
         .populate('personalTracker')
         
         // Get user's Collection they own to display.
         Collection.find({owner: userId})
             .then (collection => {
-                res.render('user/home', { user, collection})
+                res.render('user/home', { user, collection, loggedIn})
             })
             .catch(error => {
                 console.log(error)
