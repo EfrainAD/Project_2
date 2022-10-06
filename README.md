@@ -2,6 +2,7 @@
 
 ## Deployment
 https://gostudies.herokuapp.com/collection
+https://long-plum-barracuda-hat.cyclic.app
 
 ## Overview
 
