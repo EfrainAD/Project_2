@@ -1,3 +1,6 @@
+.navbar {
+     margin-bottom: 2rem;
+}
 .nav-link {
      padding: 4px;
 }
@@ -7,28 +10,71 @@ body {
 }
 body a {
      color: #DBE8F9;
+     width: auto;
+}
+.author {
+     font-style: italic;
+     font-size: 1rem;
+}
+.show-page-author {
+     vertical-align: sub;  
 }
 .collections-header {
      display: flex;
      align-items: center;
      margin: 1rem 0;
 }
-.collections-header button {
-     background: #A0AEC1;
+/* .add, .edit, .delete {
+     
+} */
+
+.add,
+.edit,
+.delete {
      margin: 0 1rem;
      border-radius: 10px;
      height: 2rem;
      border: 1px solid #FFB739;
 }
-.collection-row{
+.add {
+     background: #A0AEC1;
+}
+.edit {
+     background: #FFB739;
+     border-radius: 0;
+}
+.delete {
+     background: #FA6121;
+     border-radius: 0px;
+}
+.two-grouped {
+     margin-left: 1rem;
+}
+.two-grouped * {
+     margin: .3rem 0;
+}
+input[type=text] {
+     background: #DBE8F9;
+}
+.row{
      /* color: #A0AEC1; */
      /* border-bottom: 2px solid #FFB739; */
-     font-size: 1.5rem;
+     font-size: 1rem;
      padding: 10px;
      border-top: 1px solid #466289;
 }
-.collection-row .author {
-     font-style: italic;
+.row .author {
      margin-left: 1rem;
      font-size: 0.8rem;
+}
+.container-md {
+     margin: 0 auto;
+     width: 70%;
+     /* border: 10px solid black; */
+}
+.actions {
+     margin: 3rem 0;
+}
+.problems {
+     margin: 3rem 0;
 }

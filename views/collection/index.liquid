@@ -5,8 +5,8 @@
   <div class="collections-header">
     <h1>Collections!</h1>
     <!-- Add a new collection -->
-    <a href="/collection/new">
-      <button>Add New Collection</button>
+    <a href="/collection/new" class="btn add">
+      Add New Collection
     </a>
   </div>
 
@@ -15,15 +15,14 @@
     <p>There are no collections yet. Please add some.</p>
   {% else %}
     {% for collection in collection %}
-      <div class="collection-row">
+      <div class="row">
         <a class="collection-link" href="/collection/{{collection.id}}">{{collection.name}}
         </a>
         <div class="author">by
           {{collection.owner.username}}
         </div>
-
       </div>
     {% endfor %}
   {% endif %}
 
-{% endblock %}}}}}}
+{% endblock %}}}}}}}}}}}}
