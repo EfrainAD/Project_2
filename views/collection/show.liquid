@@ -1,69 +1,65 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
-  <div class="container-md">
+  <section class="header">
     <h1>
-      {{collection.name}}
-      <span class="show-page-author author">by
-        {{collection.owner.username}}
-      </span>
+      {{collection.name}} <span class="show-page-author author"> by {{collection.owner.username}}</span>
     </h1>
-    <!-- puzzle: [ // Make plural -->
-
-    <!-- We are getting the number of problems/puzzle that are public and private so we can display to the user how many he has of each. -->
-    <!-- public -->
+  </section>
+  <section class="main-content problems">
+    <!-- fetch -->
+    <!-- fetching public problems -->
     {% assign publicCounter = 0 %}
       {% for item in collection.puzzle %}
         {% if item.public == true %}
-      {% assign publicCounter = publicCounter | plus: 1  %}
-    {% endif %}
-    {% endfor %}
-    <!-- private -->
-    {% assign privateCounter = 0 %}
-      {% for item in collection.puzzle %}
-        {% if item.public == false %}
-      {% assign privateCounter = privateCounter | plus: 1  %}
-    {% endif %}
-    {% endfor %}
-
-    <!-- Display all problems in two parts, 'public part' and 'private part' -->
-    <!-- Public Part -->
-      <section class="problems"> <p>
-        Problems
-        {{publicCounter}}
+          {% assign publicCounter = publicCounter | plus: 1  %}
+        {% endif %}
+      {% endfor %}
+      <!-- fetching private problems -->
+      {% assign privateCounter = 0 %}
+        {% for item in collection.puzzle %}
+          {% if item.public == false %}
+        {% assign privateCounter = privateCounter | plus: 1  %}
+      {% endif %}
+      {% endfor %}
+      <!-- END of fetch -->
+      <p>
+        Problems {{publicCounter}}
       </p>
-      <!-- should filter public -->
+      <!-- Display Public Problems-->
       {% if publicCounter == 0 %}
         <p>
           This collection has no problems in it.
         </p>
       {% else %}
+      {% for puzzle in collection.puzzle %}
+        {% if puzzle.public == true %}
+          <div class="row">
+            <a href="/puzzle/{{puzzle.id}}">
+              {{puzzle.problem}}
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+    <!-- Display Public Problems (if owner)-->
+    {% if userId == collection.owner.id %}
+      {% if privateCounter > 0 %}
+        <h3>Your Private Problems in this collection</h3>
         {% for puzzle in collection.puzzle %}
-          {% if puzzle.public == true %}
+          {% if puzzle.public == false %}
             <div class="row">
-              <a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}
+              <a href="/puzzle/{{puzzle.id}}">
+                {{puzzle.problem}}
               </a>
             </div>
           {% endif %}
         {% endfor %}
       {% endif %}
-
-      <!-- Private Part -->
-      <!-- Display any Private problem  that the user has IF this collection. -->
-      {% if userId == collection.owner.id %}
-        {% if privateCounter > 0 %}
-          <h3>Your Private Problems in this collection</h3>
-          {% for puzzle in collection.puzzle %}
-            {% if puzzle.public == false %}
-              <div class="row">
-                <a href="/puzzle/{{puzzle.id}}">{{puzzle.problem}}
-                </a>
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      {% endif %}
-    </section>
-    <section class="actions">
+    {% endif %}
+  </section>
+  <section class="actions">
+    {% if userId == collection.owner.id %}
+      <!-- private or public status -->
       <h3>
         {% if collection.public %}
           This collection is public.
@@ -71,30 +67,35 @@
           This collection is private.
         {% endif %}
       </h3>
-      <!-- These are my 3 buttons (Plus online form under it) -->
-      <!-- Add problem to the collection. -->
+      <!-- Users controls -->
       <a class="btn add" href="/puzzle/{{collection._id}}/new">
         Add a Problem
       </a>
-
       <div class="btn-group two-grouped">
         <!-- Edit the collection -->
-        <a href="/collection/{{collection._id}}/edit" class="btn edit">Edit Collection</a>
+        <a href="/collection/{{collection._id}}/edit" class="btn edit">
+          Edit Collection
+        </a>
         <!-- Delete the collection -->
         <form action="/collection/delete/{{collection._id}}?_method=DELETE" method="POST">
           <input type="submit" value="Delete" class="btn delete">
         </form>
       </div>
-      <!-- Button to add all problem in collection to personal problem que. -->
-      <!-- req.params will have the collection id to get problems from. -->
-      <!-- req.body.userCollection will have the users collection that he/she want's to add the problems to. -->
-        <div class="col-md-6"> <form action="/user/{{collection.id}}" method="POST">
-          <label class="form-label">Which collection would you like to add to?
-          </label>
-          <input type="text" class="form-control" name="userCollection" value="{{collection.name}}"/>
-          <input type="submit" class="btn add" value="Add All Problems to my Problem set"/>
-        </form>
+    {% endif %}
+    {% if loggedIn == true %}
+      <!-- Button adds all the problem in the collection to user's personal problem que. -->
+      <div class="col-md-6"> <form action="/user/{{collection.id}}" method="POST">
+        <label class="form-label">
+          Which collection would you like to add to?
+        </label>
+        <input type="text" class="form-control" name="userCollection" value="{{collection.name}}"/>
+        <input type="submit" class="btn add" value="Add All Problems to my Problem set"/>
+      </form>
+    {% endif %}
+  </section>
+    <section class="actions">
+      
       </section>
     </div>
   </div>
-{% endblock %}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+{% endblock %}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
