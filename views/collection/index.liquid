@@ -5,9 +5,11 @@
   <div class="collections-header">
     <h1>Collections!</h1>
     <!-- Add a new collection -->
-    <a href="/collection/new" class="btn add">
+    {% if loggedIn == true %}
+      <a href="/collection/new" class="btn add">
       Add New Collection
     </a>
+    {% endif %}
   </div>
 
   <!-- Display what collections you have with a link to them. -->
