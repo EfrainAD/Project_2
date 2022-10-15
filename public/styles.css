@@ -38,6 +38,7 @@ body a {
      box-shadow: 1px 1px 1px 1px #FFB739;
 }
 .add {
+     margin-top: 1rem;
      background: #A0AEC1;
 }
 .edit {
@@ -48,10 +49,10 @@ body a {
      background: #FA6121;
      border-radius: 0px;
 }
-.two-grouped {
+/* .two-grouped {
      margin-left: 1rem;
      vertical-align: center;
-}
+} */
 .two-grouped * {
      margin: .3rem 0;
      display: inline-block;
@@ -76,9 +77,12 @@ input[type=text] {
      width: 70%;
      /* border: 10px solid black; */
 }
-.actions {
-     margin: 3rem 0;
-}
+/* .actions {
+     margin: 3rem 0 0 0;
+} */
 .problems {
      margin: 3rem 0;
+}
+.margin-top {
+     margin-top: 1rem;
 }
