@@ -119,5 +119,7 @@ input[type=text] {
      transform: rotateY(180deg);
 }
 .card-content {
-     vertical-align: center;
+     position: relative;
+     top: 40%;
+     align-items: center;
 }
