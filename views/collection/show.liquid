@@ -22,9 +22,9 @@
       {% endif %}
       {% endfor %}
       <!-- END of fetch -->
-      <p>
+      <h3>
         Problems {{publicCounter}}
-      </p>
+      </h3>
       <!-- Display Public Problems-->
       {% if publicCounter == 0 %}
         <p>
@@ -71,7 +71,7 @@
       <a class="btn add" href="/puzzle/{{collection._id}}/new">
         Add a Problem
       </a>
-      <div class="btn-group two-grouped">
+      <div class="two-grouped">
         <!-- Edit the collection -->
         <a href="/collection/{{collection._id}}/edit" class="btn edit">
           Edit Collection
@@ -89,7 +89,7 @@
           Which collection would you like to add to?
         </label>
         <input type="text" class="form-control field-colection-name" name="userCollection" value="{{collection.name}}"/>
-        <input type="submit" class="btn add" value="Add All Problems to my Problem set"/>
+        <input type="submit" class="btn add" value="Add All Problems to y Problem Set"/>
       </form>
     {% endif %}
   </section>

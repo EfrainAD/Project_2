@@ -35,6 +35,7 @@ body a {
      border-radius: 10px;
      height: 2rem;
      border: 1px solid #FFB739;
+     box-shadow: 1px 1px 1px 1px #FFB739;
 }
 .add {
      background: #A0AEC1;
@@ -49,9 +50,11 @@ body a {
 }
 .two-grouped {
      margin-left: 1rem;
+     vertical-align: center;
 }
 .two-grouped * {
      margin: .3rem 0;
+     display: inline-block;
 }
 input[type=text] {
      background: #DBE8F9;
@@ -60,9 +63,7 @@ input[type=text] {
      width: 20rem;
 }
 .row{
-     /* color: #A0AEC1; */
-     /* border-bottom: 2px solid #FFB739; */
-     font-size: 1rem;
+     display: block;
      padding: 10px;
      border-top: 1px solid #466289;
 }
