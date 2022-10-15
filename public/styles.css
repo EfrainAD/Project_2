@@ -43,6 +43,9 @@ body a {
 .add {
      background: #A0AEC1;
 }
+.add-to-stack {
+     margin: 0;
+}
 .edit {
      background: #FFB739;
      border-radius: 0;
