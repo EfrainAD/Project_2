@@ -82,9 +82,9 @@ input[type=text] {
      width: 70%;
      /* border: 10px solid black; */
 }
-/* .actions {
-     margin: 3rem 0 0 0;
-} */
+.actions {
+     margin-top: 2rem;
+}
 .problems {
      margin: 3rem 0;
 }

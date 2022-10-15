@@ -14,6 +14,9 @@
                 </div>
             </div>
     </main>
+    {% for collection in puzzle.collections %}
+        <h4>Collection: <a href="/collection/{{collection.id}}">{{collection.name}}</a></h4>
+    {% endfor %}
     <section class="actions">
         {% if loggedIn == true %}
             {% if userId == puzzle.owner.id %}
@@ -24,9 +27,6 @@
                         This puzzle is private.
                     {% endif %}
                 </h4>
-                {% for collection in puzzle.collections %}
-                    <h4>Collection: <a href="/collection/{{collection.id}}">{{collection.name}}</a></h4>
-                {% endfor %}
                 
                 <!-- Buttons to do thing with this question/answer -->
                 <div class="two-grouped">
