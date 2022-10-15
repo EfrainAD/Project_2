@@ -1,36 +1,42 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 
 {% block content %}
-<div class="container-md">
-    <!-- Edit form that display the corrent data so you can edit collection -->
-    <form action="/collection/{{collection._id}}?_method=PUT" method="POST">
-        <fieldset>
-            <legend>Edit This {{collection.name}}</legend>
-            <label class="form-label">Name:</label>
-            <input 
-                type="text" 
-                name="name" 
-                placeholder="enter name" 
-                class="form-control"
-                value="{{collection.name}}"
-            >
-            <label class="form-label">public</label>
-            <input 
-                type="checkbox" 
-                name="public" 
-                class="form-check-input"
-                {% if collection.public %} 
-                    checked
-                {% endif %}
-            >
-        </fieldset>
-        <div class="btn-group">
-          <!-- Submit Edit Button -->
-            <input type="submit" value="Edit {{ collection.name }}" class="btn btn-success">
-            
-          <!-- A back link to collections -->
-            <a href="/collection" class="btn btn-warning">Go Back</a>
-        </div>
-    </form>
-</div>
+<main>
+    <div class="container-md">
+        <!-- Edit form that display the corrent data so you can edit collection -->
+        <form action="/collection/{{collection._id}}?_method=PUT" method="POST">
+            <fieldset>
+                <legend>{{collection.name}}</legend>
+                <div class="form-row">
+                    <label class="form-label">
+                        Name:
+                    </label>
+                    <input 
+                        type="text" 
+                        name="name" 
+                        placeholder="enter name" 
+                        value="{{collection.name}}"
+                    >
+                </div>
+                <label class="form-label">public</label>
+                <input 
+                    type="checkbox" 
+                    name="public" 
+                    class="form-check-input"
+                    {% if collection.public %} 
+                        checked
+                    {% endif %}
+                >
+            </fieldset>
+            <div class="two-grouped">
+            <!-- Submit Edit Button -->
+                <input type="submit" value="Submit Edit" class="btn edit">
+                
+            <!-- A back link to collections -->
+                <a href="/collection" class="btn">Go Back</a>
+            </div>
+        </form>
+    </div>
+</main>
+
 {% endblock %}

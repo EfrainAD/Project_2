@@ -64,9 +64,20 @@ body a {
 }
 input[type=text] {
      background: #DBE8F9;
+     border: 0;
+     width: 20rem;
+     border: none;
 }
 .field-colection-name {
-     width: 20rem;
+     display: block;
+}
+legend {
+     font-size: 3rem;
+     margin-bottom: 1.5rem;
+}
+.form-row {
+     margin-top: 4rem;
+     margin-bottom: 0.7rem;
 }
 .row{
      display: block;
