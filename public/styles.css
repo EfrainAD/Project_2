@@ -91,3 +91,33 @@ input[type=text] {
 .margin-top {
      margin-top: 1rem;
 }
+/* card */
+.card-platform {
+     width: 400px;
+     height: 300px;
+     perspective: 500;
+}
+.card {
+     position: relative;
+     width: 100%;
+     height: 100%;
+     text-align: center;
+     transition: transform 2s;
+     transform-style: preserve-3d;
+}
+.card-platform:hover .card {
+     transform: rotateY(180deg);
+}
+.card-front, .card-back {
+     position: absolute;
+     width: 100%;
+     height: 100%;
+     background: yellow;
+     backface-visibility: hidden;
+}
+.card-back {
+     transform: rotateY(180deg);
+}
+.card-content {
+     vertical-align: center;
+}

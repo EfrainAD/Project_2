@@ -6,11 +6,19 @@
 </div>
 <main>
    <!-- Flash Card -->
-    <h4>Question: {{puzzle.problem}}</h4>
-    <h4>Answer: {{puzzle.answer}}</h4>
+   <div class="card-platform">
+        <div class="card">
+            <div class="card-front">
+                <h4 class="card-content">Question: {{puzzle.problem}}</h4>
+            </div>
+            <div class="card-back">
+                <h4 class="card-content">Answer: {{puzzle.answer}}</h4>
+            </div>
+        </div>
+    </div>
 </main>
- {% if loggedIn == true %}
-    <section class="actions">
+<section class="actions">
+    {% if loggedIn == true %}
         {% if userId == puzzle.owner.id %}
             <h4>
                 {% if puzzle.public %}
@@ -39,6 +47,6 @@
         <form action="/user/tracker/{{puzzle.id}}" method="POST">
             <input type="submit" value="Add to my Problems" class="btn add add-to-stack">
         </form>
-    </section>
-{% endif %}
+    {% endif %}
+</section>
 {% endblock %}
