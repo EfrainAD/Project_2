@@ -84,18 +84,13 @@
     {% endif %}
     {% if loggedIn == true %}
       <!-- Button adds all the problem in the collection to user's personal problem que. -->
-      <div class="col-md-6"> <form action="/user/{{collection.id}}" method="POST">
+      <form action="/user/{{collection.id}}" method="POST">
         <label class="form-label">
           Which collection would you like to add to?
         </label>
-        <input type="text" class="form-control" name="userCollection" value="{{collection.name}}"/>
+        <input type="text" class="form-control field-colection-name" name="userCollection" value="{{collection.name}}"/>
         <input type="submit" class="btn add" value="Add All Problems to my Problem set"/>
       </form>
     {% endif %}
   </section>
-    <section class="actions">
-      
-      </section>
-    </div>
-  </div>
 {% endblock %}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}

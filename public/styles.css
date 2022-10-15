@@ -56,6 +56,9 @@ body a {
 input[type=text] {
      background: #DBE8F9;
 }
+.field-colection-name {
+     width: 20rem;
+}
 .row{
      /* color: #A0AEC1; */
      /* border-bottom: 2px solid #FFB739; */
