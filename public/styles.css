@@ -37,8 +37,10 @@ body a {
      border: 1px solid #FFB739;
      box-shadow: 1px 1px 1px 1px #FFB739;
 }
-.add {
+.problems .add {
      margin-top: 1rem;
+}
+.add {
      background: #A0AEC1;
 }
 .edit {
