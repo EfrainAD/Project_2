@@ -9,33 +9,36 @@
     <h4>Question: {{puzzle.problem}}</h4>
     <h4>Answer: {{puzzle.answer}}</h4>
 </main>
-<section class="actions">
-    <h4>
-        {% if puzzle.public %}
-            This puzzle is public.
-        {% else %}
-            This puzzle is private.
+ {% if loggedIn == true %}
+    <section class="actions">
+        {% if userId == puzzle.owner.id %}
+            <h4>
+                {% if puzzle.public %}
+                    This puzzle is public.
+                {% else %}
+                    This puzzle is private.
+                {% endif %}
+            </h4>
+            {% for collection in puzzle.collections %}
+                <h4>Collection: <a href="/collection/{{collection.id}}">{{collection.name}}</a></h4>
+            {% endfor %}
+            
+            <!-- Buttons to do thing with this question/answer -->
+            <div class="two-grouped">
+                <!-- edit -->
+                <a href="/puzzle/{{puzzle.id}}/edit" class="btn edit">
+                    Edit
+                </a>
+                <!-- delete -->
+                <form action="/puzzle/delete/{{puzzle.id}}?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="btn delete">
+                </form>
+            </div>
         {% endif %}
-    </h4>
-    {% for collection in puzzle.collections %}
-        <h4>Collection: <a href="/collection/{{collection.id}}">{{collection.name}}</a></h4>
-    {% endfor %}
-    
-    <!-- Buttons to do thing with this question/answer -->
-    <div class="two-grouped">
-        <!-- edit -->
-        <a href="/puzzle/{{puzzle.id}}/edit" class="btn edit">
-            Edit
-        </a>
-        <!-- delete -->
-        <form action="/puzzle/delete/{{puzzle.id}}?_method=DELETE" method="POST">
-            <input type="submit" value="Delete" class="btn delete">
-        </form>
-    </div>
-
         <!-- Add this one problem to your personal tracker. -->
         <form action="/user/tracker/{{puzzle.id}}" method="POST">
             <input type="submit" value="Add to my Problems" class="btn add add-to-stack">
         </form>
-</section>
+    </section>
+{% endif %}
 {% endblock %}

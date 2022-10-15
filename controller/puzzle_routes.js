@@ -75,7 +75,7 @@ router.put('/:puzzleId', (req, res) => {
 
 //Page: One Problem to look at.
 router.get('/:puzzleId', (req, res) => {
-    const loggedIn = req.session.loggedIn
+    const {userId, loggedIn} = req.session
     const puzzleId = req.params.puzzleId
     
     Puzzle.findById(puzzleId)
@@ -83,7 +83,7 @@ router.get('/:puzzleId', (req, res) => {
     .populate('collections','name')
     .then(puzzle => {
         if ((puzzle.public === true) || (puzzle.owner.id == req.session.userId) )  {
-            res.render('puzzle/show', {puzzle, loggedIn})
+            res.render('puzzle/show', {puzzle, userId, loggedIn})
         }
         else {
             res.render('user/accessDenied', {loggedIn})
