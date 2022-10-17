@@ -33,7 +33,8 @@ body a {
 
 .add,
 .edit,
-.delete {
+.delete,
+.start {
      margin: 0 1rem;
      border-radius: 10px;
      height: 2rem;
@@ -56,6 +57,12 @@ body a {
 .delete {
      background: #FA6121;
      border-radius: 0px;
+}
+.start {
+     background: #627894;
+     padding-bottom: 1.8rem;
+     padding-left: 2rem;
+     padding-right: 2rem;
 }
 /* .two-grouped {
      margin-left: 1rem;
@@ -160,4 +167,14 @@ legend {
      font-size: 2rem;
      font-weight: bolder;
      top: 30%;
+}
+.main-home-page {
+     text-align: center;
+}
+.main-home-page .container-md {
+     width: 80%;
+}
+.main-home-page h1 {
+     border-bottom: 3px solid black;
+     margin-bottom: 2rem;
 }

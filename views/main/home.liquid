@@ -1,6 +1,7 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
-    <h1>This is my home page!</h1>
+<div class="container-md main-home-page">
+    <h1>Welcome back!</h1>
     
     <!-- Gets the number of problems due. -->
     {% assign dueCounter = 0 %}
@@ -8,10 +9,12 @@
             {% assign dueCounter = dueCounter | plus: 1  %}
     {% endfor %}
     <!-- Lets you know how many problems you have doe -->
-    <h4>You have {{dueCounter}} problems due.</h4>
+    <h4>You have {{dueCounter}} problems due today!</h4>
 
     <!-- Displays your questions -->
     {% if dueCounter > 0 %}
-        <a href="/main/go" class="btn btn-secondary">Let's get started!</a>
+        <a href="/main/go" class="btn start">Let's get started!</a>
     {% endif %}
+</div>
+    
 {% endblock %}
