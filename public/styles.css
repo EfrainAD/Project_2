@@ -68,6 +68,16 @@ input[type=text] {
      width: 20rem;
      border: none;
 }
+input[type=checkbox] {
+     background: #DBE8F9;
+}
+input[type=checkbox]:hover {
+     background: #DBE8E0;
+     cursor: pointer;
+}
+input[type=checkbox]:checked {
+     background-color: #466289;
+}
 .field-colection-name {
      display: block;
 }
