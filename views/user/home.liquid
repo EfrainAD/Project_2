@@ -1,7 +1,7 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
 
-<h1>User: {{user.username}}</h1>
+<h1>{{user.username}}</h1>
 <h2>Your Collection</h2>
 
 <!-- Add a new collection -->
@@ -9,16 +9,19 @@
     
 <!-- Show all collections that the user has. -->
 {% if collection.length == 0 %}
-    <p>There are no collections yet. Please add some.</p>
+    <p>You do not have any collections yet.</p>
 {% else %}
     {% for collection in collection %}
-        <p><a href="/collection/{{collection.id}}">{{collection.name}}</a>
-                Is public? {% if collection.public %}
-                    Yes
-                {% else %}
-                    No
-                {% endif %}
-        </p>
+        <div class="row">
+            <a href="/collection/{{collection.id}}">
+                {{collection.name}}
+            </a>
+            Is public? {% if collection.public %}
+                Yes
+            {% else %}
+                No
+            {% endif %}
+        </div>
     {% endfor %}
 {% endif %}
 
@@ -28,19 +31,18 @@
 <h6>Number of problems: {{user.personalTracker.length}}</h6>
 <!-- Display all problems -->
 {% for problems in user.personalTracker %}    
-    <p>
+    <div>
         {{forloop.index}}: 
         <a href="/main/{{user.personalTracker[forloop.index0].id}}">
             {{user.personalTracker[forloop.index0].problem}} 
             Due Date: {{user.personalTracker[forloop.index0].dueDate}}
         </a>
         
-        
         <!-- DELETE your problem. -->
         <form action="/main/delete/{{user.personalTracker[forloop.index0].id}}?_method=DELETE" method="POST">
             <input type="submit" value="X" class="btn btn-danger">
         </form>
-    </p>
+    </div>
 {% endfor %}
 {% endblock %}
 
