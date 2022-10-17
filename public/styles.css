@@ -35,6 +35,7 @@ body a {
 .edit,
 .delete,
 .start {
+     color: #DBE8F9;
      margin: 0 1rem;
      border-radius: 10px;
      height: 2rem;
@@ -175,6 +176,13 @@ legend {
      width: 80%;
 }
 .main-home-page h1 {
-     border-bottom: 3px solid black;
+     border-bottom: 3px solid red;
      margin-bottom: 2rem;
+}
+.main-home-page h2 {
+     border: 1px solid black;
+     border-radius: 10px;
+     margin-bottom: 1rem;
+     background: #627894;
+     color: #DBE8F9;
 }
