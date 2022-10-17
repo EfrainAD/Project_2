@@ -8,6 +8,9 @@ body {
      background: cadetblue;
      color: #FA6121;
 }
+legend {
+    line-height: 90%;
+}
 body a {
      color: #DBE8F9;
      width: auto;
