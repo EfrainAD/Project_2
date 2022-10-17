@@ -64,9 +64,14 @@ body a {
 }
 input[type=text] {
      background: #DBE8F9;
+     color: #FA6121;
      border: 0;
      width: 20rem;
      border: none;
+}
+input[type=text]:focus {
+     background: #DBE8F9;
+     color: #FA6121;
 }
 input[type=checkbox] {
      background: #DBE8F9;
