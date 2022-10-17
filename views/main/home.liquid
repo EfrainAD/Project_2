@@ -1,19 +1,35 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
 <div class="container-md main-home-page">
-    <h1>Welcome back!</h1>
-    
-    <!-- Gets the number of problems due. -->
-    {% assign dueCounter = 0 %}
-    {% for item in user.personalTracker %}
-            {% assign dueCounter = dueCounter | plus: 1  %}
-    {% endfor %}
-    <!-- Lets you know how many problems you have doe -->
-    <h4>You have {{dueCounter}} problems due today!</h4>
+    {% if loggedIn %}
+        <h1>Welcome back!</h1>
+        
+        <!-- Gets the number of problems due. -->
+        {% assign dueCounter = 0 %}
+        {% for item in user.personalTracker %}
+                {% assign dueCounter = dueCounter | plus: 1  %}
+        {% endfor %}
+        <!-- Lets you know how many problems you have doe -->
+        <h4>You have {{dueCounter}} problems due today!</h4>
 
-    <!-- Displays your questions -->
-    {% if dueCounter > 0 %}
-        <a href="/main/go" class="btn start">Let's get started!</a>
+        <!-- Displays your questions -->
+        {% if dueCounter > 0 %}
+            <a href="/main/go" class="btn start">Let's get started!</a>
+        {% endif %}
+    {% else %}
+        <h1>Welcome!</h1>
+
+        <h2>Why you're here</h2>
+        <p>
+            This is where I explain to you why you are here. To make study decks and to have them  spaced out further when you get it right to hlep with over study, so you can study more of the things you keep forgetting. 
+        </p>
+        <p>
+            You can even add your cards, and make them public so you can share them with your fellow classmates. They can copy it, and add there own, and you can add some of there cards to your deck as well. And of course you don't have to make every study card in your deck public, even if your deck is!
+        </p>
+        <p>
+            Study on your own, or study with other classmates, this is a good site for you.
+        </p>
+        <a href="/user/signup" class="btn start">Lets Get Signed Up</a>
     {% endif %}
 </div>
     
