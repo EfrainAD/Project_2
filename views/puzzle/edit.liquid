@@ -5,7 +5,7 @@
     <!-- Edit form that display the info you have for your question and answer and lets you change them. -->
     <form action="/puzzle/{{puzzle._id}}?_method=PUT" method="POST">
         <fieldset>
-            <legend>Edit This {{puzzle.problem}}</legend>
+            <legend>{{puzzle.problem}}</legend>
             <label class="form-label">Question:</label>
             <input 
                 type="text" 
@@ -34,10 +34,10 @@
         <!-- Buttons under the forum -->
         <div class="btn-group">
             <!-- submit forum -->
-            <input type="submit" value="Submit Edit {{ puzzle.name }}" class="btn btn-success">
+            <input type="submit" value="Submit Edit {{ puzzle.name }}" class="btn edit">
             
             <!-- Go Back to puzzle button. -->
-            <a href="/puzzle" class="btn btn-warning">Go Back</a>
+            <a href="/puzzle" class="btn">Go Back</a>
         </div>
     </form>
 </div>
