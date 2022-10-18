@@ -1,6 +1,6 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
-     
+     <div class="container-md center"
      <!-- Check to see if the Problem is due yet. -->
      <!-- if YES Desplay the page. -->
      <!-- if NO display a "No problems are due right now." -->
@@ -8,17 +8,22 @@
      {% capture posttime %}{{dueProblem.dueDate | date: '%s'}}{% endcapture %}
      {% if posttime < nowunix %}     
      <!-- Ask the question -->
-     <h2>Question: {{dueProblem.problem}}</h2>
-
-     <!-- Display the answer when you click "Show Answer" -->
-     <button id="show-answer">Show Answer</button>
-     <h2 id="answer" style="display:none;">Answer: {{dueProblem.answer}}</h2>
-
+     
+     <!-- Flash Card -->
+     <div class="card-platform">
+          <div class="card">
+          <div class="card-front">
+               <p class="card-content">{{dueProblem.problem}}</p>
+          </div>
+          <div class="card-back">
+               <p class="card-content">{{dueProblem.answer}}</p>
+          </div>
+          </div>
+     </div>
      <!-- Mark the answer right or wrong -->
-     <div class="btn-group">
-          <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary">Right</a>
-          <a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger">Wrong</a>
-      </div>
+     <div class="right-wrong-grouped">
+          <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary right">Right</a><a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger wrong">Wrong</a>
+     </div>
       <!-- IF ELSE -->
       {% else %}
           <h1>There are no problems doe right now.</h1>

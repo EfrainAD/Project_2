@@ -73,6 +73,23 @@ body a {
      margin: .3rem 0;
      display: inline-block;
 }
+.right-wrong-grouped {
+     /* position: relative; */
+     width: 25rem;
+     /* height: 15rem; */
+     margin: 0 auto;
+}
+.right-wrong-grouped * {
+     margin: 0;
+     width: 45%;
+     display: inline-block;
+}
+.right {
+     border-radius: 40px 0 0 40px;
+}
+.wrong {
+     border-radius: 0 40px 40px 0;
+}
 input[type=text] {
      background: #DBE8F9;
      color: #FA6121;
@@ -134,10 +151,10 @@ legend {
 }
 /* card */
 .card-platform {
-     width: 400px;
-     height: 300px;
+     width: 25rem;
+     height: 15rem;
      perspective: 500;
-     margin: 10% auto;
+     margin: 3rem auto;
 }
 .card {
      position: relative;
