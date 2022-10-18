@@ -1,27 +1,40 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
-    <div class="container-md">
-          <article>
-               <!-- Geniral information from the DB -->
-               <h2>Creater of this problem: {{username}}</h2>
 
-               {% for collection in tracker.collections %}
-                    <h2>Collections {{forloop.index}}: {{collection.name}}</h2>
-               {% endfor %}
-                    <h2>Problem: {{tracker.problem}}</h2>
-                    <h2>Answer: {{tracker.answer}}</h2>
-                    <h2>dueDate: {{tracker.dueDate | date: '%a %b, %d, %Y'}}</h2>
-                    <h2>dayJumper: {{tracker.dayJumper}}</h2>
-             
-            <!-- Buttons to do thing with this question/answer -->
-            <div class="btn-group">
-                <!-- edit -->
-                <a href="/main/{{tracker.id}}/edit" class="btn btn-primary">Edit</a>
-                <!-- delete -->
-                <form action="/main/delete/{{tracker.id}}?_method=DELETE" method="POST">
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                </form>
+<div class="container-md">
+    <!-- Flash Card -->
+    <div class="card-platform">
+        <div class="card">
+            <div class="card-front">
+                <p class="card-content">{{tracker.problem}}</p>
             </div>
-        </article>
+            <div class="card-back">
+                <p class="card-content">{{tracker.answer}}</p>
+            </div>
+        </div>
     </div>
+
+    <!-- Geniral information from the DB -->
+    <h3>Author: {{username}}</h3>
+
+    <h5>Collections</h5>
+    <div class="row">
+        {% for collection in tracker.collections %}
+            <p>{{collection.name}}</p>
+        {% endfor %}
+    </div>
+    
+    <p class="tooltip-container">dueDate: {{tracker.dueDate | date: '%a %b, %d, %Y at %H:%M'}}</p>
+    <p>dayJumper: {{tracker.dayJumper}}</p>
+        
+    <!-- Buttons to do thing with this question/answer -->
+    <div class="two-grouped">
+        <!-- edit -->
+        <a href="/main/{{tracker.id}}/edit" class="btn edit">Edit</a>
+        <!-- delete -->
+        <form action="/main/delete/{{tracker.id}}?_method=DELETE" method="POST">
+            <input type="submit" value="Delete" class="btn delete">
+        </form>
+    </div>
+</div>
 {% endblock %}
