@@ -192,7 +192,8 @@ legend {
 .main-home-page .container-md {
      width: 80%;
 }
-.main-home-page h1 {
+.main-home-page h1,
+.main-active-page h1 {
      border-bottom: 3px solid red;
      margin-bottom: 2rem;
 }

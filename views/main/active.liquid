@@ -1,6 +1,6 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
-     <div class="container-md center"
+     <div class="container-md center main-active-page"
      <!-- Check to see if the Problem is due yet. -->
      <!-- if YES Desplay the page. -->
      <!-- if NO display a "No problems are due right now." -->
@@ -27,9 +27,9 @@
       <!-- IF ELSE -->
       {% else %}
           <h1>There are no problems doe right now.</h1>
-          <a href="/collection">Go Look for some in collections!</a><br>
-          <a href="/collection/new">Make a new collection!</a><br>
-          <a href="/user">Go to my account to add problems from my colelctions</a><br>
+          <a href="/collection" class="btn">Go Look for some in collections!</a><br>
+          <a href="/collection/new" class="btn">Make a new collection!</a><br>
+          <a href="/user" class="btn">Go to my account to add problems from my colelctions</a><br>
      {% endif %}
 {% endblock %}
 
