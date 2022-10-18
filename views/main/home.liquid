@@ -7,7 +7,11 @@
         <!-- Gets the number of problems due. -->
         {% assign dueCounter = 0 %}
         {% for item in user.personalTracker %}
+            {% assign dueDate = item.dueDate | date: '%s'  %}
+            {% assign today = 'now' | date: '%s'  %}
+            {% if dueDate < today  %}
                 {% assign dueCounter = dueCounter | plus: 1  %}
+            {% endif %}
         {% endfor %}
         <!-- Lets you know how many problems you have doe -->
         <h4>You have {{dueCounter}} problems due today!</h4>
