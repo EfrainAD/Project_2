@@ -1,34 +1,40 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 
 {% block content %}
-<div class="container-md">
+<div class="container-md main-edit-page">
     <!-- Edit form that display the info you have for your question and answer and lets you change them. -->
     <form action="/main/{{tracker._id}}?_method=PUT/edit" method="POST">
         <fieldset>
-            <legend>Edit This {{tracker.problem}}</legend>
-            <label class="form-label">Question:</label>
-            <input 
-                type="text" 
-                name="dueDate" 
-                placeholder="enter due date" 
-                class="form-control"
-                value="{{tracker.dueDate}}"
-            >
-            <input 
-                type="text" 
-                name="dueDate" 
-                placeholder="enter day jumper" 
-                class="form-control"
-                value="{{tracker.dayJumper}}"
-            >
+            <legend class="center">{{tracker.problem}}</legend>
+            <p>This is the next day that you will see this problem again</p>
+            <div class="center">
+                <label class="form-label">dueDate</label>
+                <input 
+                    type="text" 
+                    {%- comment -%} type="datetime-local"  {%- endcomment -%}
+                    name="dueDate" 
+                    placeholder="enter due date" 
+                    value="{{tracker.dueDate}}"
+                >
+            </div>
+            <p>This is the varible that conrols how many days the problem will go up the next time you click right. (Gets larger with every time you clicked that you got it right.)</p>
+            <div class="center">
+                <label class="form-label">Days Interval</label>
+                <input 
+                    type="number" 
+                    name="Days" 
+                    placeholder="enter day jumper" 
+                    value="{{tracker.dayJumper}}"
+                >
+            </div>
         </fieldset>
         <!-- Buttons under the forum -->
-        <div class="btn-group">
+        <div class="two-grouped center">
             <!-- submit forum -->
-            <input type="submit" value="Edit {{ puzzle.name }}" class="btn btn-success">
+            <input type="submit" value="Submit Edit" class="btn edit">
             
             <!-- Go Back to puzzle button. -->
-            <a href="/user" class="btn btn-warning">Go Back</a>
+            <a href="/main/{{tracker.id}}" class="btn">Go Back</a>
         </div>
     </form>
 </div>
