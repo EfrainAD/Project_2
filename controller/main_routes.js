@@ -73,19 +73,20 @@ router.get('/:id/wrong', async (req, res) => {
 })
 
 //Page: Edit forum
-router.get('/:trackerId/edit', (req, res) => {
+router.get('/:trackerId/edit', async (req, res) => {
      const trackerId = req.params.trackerId
      const ownerId = req.session.userId
      const loggedIn = req.session.loggedIn
      
-     Puzzle.findById(trackerId)
-     .then(puzzle => {
-         if (trackerId == puzzle.owner.id) {
-             res.render('puzzle/edit', {puzzle, loggedIn})
-         } else {
-             res.render('user/accessDenied')
-         }
+     const thisUser = await User.findById(ownerId).populate('personalTracker')
+     const tracker = thisUser.personalTracker.find(tracker => {
+          return tracker.id === trackerId
      })
+
+     if (tracker) 
+          res.render('main/edit', {tracker, loggedIn})
+     else 
+          res.render('user/accessDenied')
  })
 
 // Show page for personal tracker as well as options
