@@ -16,7 +16,7 @@
             <!-- Buttons to do thing with this question/answer -->
             <div class="btn-group">
                 <!-- edit -->
-                <a href="/{{tracker.id}}" class="btn btn-primary">Edit</a>
+                <a href="/main/{{tracker.id}}/edit" class="btn btn-primary">Edit</a>
                 <!-- delete -->
                 <form action="/main/delete/{{tracker.id}}?_method=DELETE" method="POST">
                     <input type="submit" value="Delete" class="btn btn-danger">
