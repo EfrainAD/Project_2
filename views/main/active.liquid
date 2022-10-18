@@ -31,15 +31,5 @@
           <a href="/collection/new">Make a new collection!</a><br>
           <a href="/user">Go to my account to add problems from my colelctions</a><br>
      {% endif %}
-      <!-- This make the answer unhidden. -->
-      <script>
-          const answer = document.querySelector("#answer")
-          const answerButton = document.querySelector('#show-answer')
-          answerButton.addEventListener('click', () => {
-               answer.style.display = "block"
-               answerButton.style.display = 'none'
-          })
-     </script>
-
 {% endblock %}
 
