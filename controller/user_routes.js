@@ -123,16 +123,16 @@ router.post('/tracker/:puzzleId', async (req, res) => {
     const userCollections = await Collection.find({owner: userId})
     let collectionToId = null // Id that collection have if it exist or made
 
-    // check if collection 'none' already exist
+    // check if collection 'Not Assigned' already exist
     for (let i = 0; i < userCollections.length; i++) {
-        if (userCollections[i].name === 'none')
+        if (userCollections[i].name === 'Not Assigned')
             collectionToId = userCollections[i].id
     }
     // If doens not make a new one named 'none'.
     if (collectionToId === null) {
         const collectionTo = await Collection.create({
             owner: userId,
-            name: 'none',
+            name: 'Not Assigned',
             puzzle: [puzzleId]
         })
         collectionToId = collectionTo.id
