@@ -1,48 +1,64 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
+<section class="user-banner">
+    <span class="user-icon"></span>
+    <h1>{{user.username}}</h1>
+</section>
+<section>
 
-<h1>{{user.username}}</h1>
-<h2>Your Collection</h2>
+    <div class="collections-header">
+        <h2>Your Collection</h2>
+        <!-- Add a new collection -->
+        <a href="/collection/new" class="btn add">
+            Add New Collection
+        </a>
+    </div>
+        
+    <!-- Show all collections that the user has. -->
+    {% if collection.length == 0 %}
+        <p>You do not have any collections yet.</p>
+    {% else %}
+        {% for collection in collection %}
+            <section class="row">
+                <a href="/collection/{{collection.id}}">
+                    {{collection.name}}
+                </a>
+                Is public? {% if collection.public %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+</section>
+<section>
 
-<!-- Add a new collection -->
-<p><a href="/collection/new"><button>Add New Collection</button></a></p>
-    
-<!-- Show all collections that the user has. -->
-{% if collection.length == 0 %}
-    <p>You do not have any collections yet.</p>
-{% else %}
-    {% for collection in collection %}
-        <div class="row">
-            <a href="/collection/{{collection.id}}">
-                {{collection.name}}
+    <!-- Show the user Personal problem/question -->
+    <h2>Your Problems Stack</h2>
+    <!-- How many do you have. -->
+    <h6>Number of problems: {{user.personalTracker.length}}</h6>
+    <!-- Display all problems -->
+    {% for problems in user.personalTracker %}    
+        <div class="row personal-tracker-row">
+            {{forloop.index}}: 
+            <a href="/main/{{user.personalTracker[forloop.index0].id}}">
+                <div class="link-container">
+                    <div>
+                        {{user.personalTracker[forloop.index0].problem}}
+                    </div>
+                    <div>
+                        Due Date: {{user.personalTracker[forloop.index0].dueDate | date: '%a %b, %d, %Y at %H:%M'}}
+                    </div>
+                </div>
             </a>
-            Is public? {% if collection.public %}
-                Yes
-            {% else %}
-                No
-            {% endif %}
+            
+            <!-- DELETE your problem. -->
+            <form action="/main/delete/{{user.personalTracker[forloop.index0].id}}?_method=DELETE" method="POST">
+                <input type="submit" value="x" id="delete-icon" class="btn delete">
+            </form>
         </div>
     {% endfor %}
-{% endif %}
-
-<!-- Show the user Personal problem/question -->
-<h2>Your Problems Stack</h2>
-<!-- How many do you have. -->
-<h6>Number of problems: {{user.personalTracker.length}}</h6>
-<!-- Display all problems -->
-{% for problems in user.personalTracker %}    
-    <div>
-        {{forloop.index}}: 
-        <a href="/main/{{user.personalTracker[forloop.index0].id}}">
-            {{user.personalTracker[forloop.index0].problem}} 
-            Due Date: {{user.personalTracker[forloop.index0].dueDate}}
-        </a>
-        
-        <!-- DELETE your problem. -->
-        <form action="/main/delete/{{user.personalTracker[forloop.index0].id}}?_method=DELETE" method="POST">
-            <input type="submit" value="X" class="btn btn-danger">
-        </form>
-    </div>
-{% endfor %}
+</section>
 {% endblock %}
 
