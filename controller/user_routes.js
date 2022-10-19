@@ -159,7 +159,8 @@ router.post('/tracker/:puzzleId', async (req, res) => {
 
 // Grab all puzzles from the collection and to personal counter.
 router.post('/:collectionId', async (req, res) => {
-    const puzzleSourceCollection = req.params.collectionId // Collection to get the problems
+    console.log("Running: router.post('/:collectionId'")
+    const puzzleSourceCollectionId = req.params.collectionId // Collection to get the problems
     const {userId, loggedIn} = req.session
     const newCollectionName = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it.(Comes from the forum.) 
     
@@ -169,42 +170,54 @@ router.post('/:collectionId', async (req, res) => {
     // if user doesn't have a collection by that name, make one.
     if (!collectionIfExists) { 
         const newCollection = await Collection.create({owner: userId, name: newCollectionName})
-        const collectionFrom = await Collection.findById(puzzleSourceCollection)
+        const sourceCollection = await Collection.findById(puzzleSourceCollectionId)
         .populate('owner')
         .populate('puzzle')
         
         // Check if aultherrized
-        if ((collectionFrom.public === true) || (userId == collectionFrom.owner.id) ) {
+        if ((sourceCollection.public === true) || (userId == sourceCollection.owner.id) ) {
             // Grab all puzzles from the collection and update to the new colleciton
-            for (let i = 0; i < collectionFrom.puzzle.length; i++) {
-                if (collectionFrom.puzzle[i].public) {                  
-                    Collection.findByIdAndUpdate({_id: newCollection._id}, {$push: {puzzle: collectionFrom.puzzle[i]}},{new: true},function (err,model){
+            for (let i = 0; i < sourceCollection.puzzle.length; i++) {
+                if (sourceCollection.puzzle[i].public) {                  
+                    Collection.findByIdAndUpdate({_id: newCollection._id}, {$push: {puzzle: sourceCollection.puzzle[i]}},{new: true},function (err,model){
                         if (err) {
                             console.log(err)
                         }
-                        console.log('model', model)
+                        console.log('model: updated courceCollection', model)
                     })
 
                     // Copy problem from other users collection and add that to the users personalTracker (That will give the due date for when it is due.)
                     Collection.findById(newCollection._id)
-                    .then(respons => {
-                        console.log(respons)
+                    .then(async collection => {
+                        console.log('This is the new Collection',collection)
+                        // The body for the creation
+                        const puzzleBody = {
+                            owner: userId,
+                            collections: [newCollection],
+                            public: true,
+                            answer: sourceCollection.puzzle[i].answer ,
+                            problem: sourceCollection.puzzle[i].problem
+                        }
+                        console.log('This is the body before it is passed', puzzleBody)
+                        // create the puzzle
+                        const newPuzzle = await Puzzle.create(puzzleBody)
+                        console.log('New puzzle just created: ', newPuzzle)
+
+                        const body = {
+                            origin: newPuzzle.id,
+                            collections: [newCollection.id], 
+                            problem: newPuzzle.problem,
+                            answer: newPuzzle.answer,
+                            dueDate: Date.now(),
+                            dayJumper: 0
+                        }
+                        const newTracker = await PersonalTracker.create(body)
+                        
+                        // Add new personal tracker to the user.
+                        userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
                     })
                     
-                    const body = {
-                        origin: collectionFrom.puzzle[i].id,
-                        collections: [newCollection.id], 
-                        problem: collectionFrom.puzzle[i].problem,
-                        answer: collectionFrom.puzzle[i].answer,
-                        dueDate: Date.now(),
-                        dayJumper: 0
-                    }
-                    const newTracker = await PersonalTracker.create(body)
-
-                    // Add new personal tracker to the user.
-                    userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
-
-                    User.findById(userId).populate('personalTracker')
+                    // User.findById(userId).populate('personalTracker')
                 }
             }
         }
