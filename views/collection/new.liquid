@@ -2,33 +2,31 @@
 {% block content %}
 
 {% if loggedIn == true %}
-<div class="container-md">
-     <!-- forum to make your new collection -->
-     <form action="/collection" method="POST">
-          <fieldset>
-               <legend>Create A New collection</legend>
-               <label class="form-label">Name:</label>
-               <input 
-               class="form-control" 
-               type="text" 
-               name="name" 
-               placeholder="enter name"
-               >
-               <label class="form-label">public?</label>
-               <input 
-               class="form-check-input" 
-               type="checkbox" 
-               name="public"
-               >
-          </fieldset>
-          <!-- Submit Button -->
+<!-- forum to make your new collection -->
+<form action="/collection" method="POST">
+     <fieldset>
+          <legend>Create A New collection</legend>
+          <label class="form-label">Name:</label>
           <input 
-          type="submit" 
-          value="Create New Collection" 
-          class="btn btn-success"
+          class="form-control" 
+          type="text" 
+          name="name" 
+          placeholder="enter name"
           >
-     </form>
-</div>
+          <label class="form-label">public?</label>
+          <input 
+          class="form-check-input" 
+          type="checkbox" 
+          name="public"
+          >
+     </fieldset>
+     <!-- Submit Button -->
+     <input 
+     type="submit" 
+     value="Create New Collection" 
+     class="btn btn-success"
+     >
+</form>
 
 {% else %}
 <p>You need to be signed in, to add a new collection. <a href="/user/singin"></a></p>

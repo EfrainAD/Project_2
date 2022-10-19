@@ -1,44 +1,42 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 
 {% block content %}
-<div class="container-md">
-    <!-- Edit form that display the info you have for your question and answer and lets you change them. -->
-    <form action="/puzzle/{{puzzle._id}}?_method=PUT" method="POST">
-        <fieldset>
-            <legend>{{puzzle.problem}}</legend>
-            <label class="form-label">Question:</label>
-            <input 
-                type="text" 
-                name="problem" 
-                placeholder="enter name" 
-                class="form-control"
-                value="{{puzzle.problem}}"
-            >
-            <input 
-                type="text" 
-                name="answer" 
-                placeholder="enter name" 
-                class="form-control"
-                value="{{puzzle.answer}}"
-            >
-            <label class="form-label">public</label>
-            <input 
-                type="checkbox" 
-                name="public" 
-                class="form-check-input"
-                {% if puzzle.public %} 
-                    checked
-                {% endif %}
-            >
-        </fieldset>
-        <!-- Buttons under the forum -->
-        <div class="btn-group">
-            <!-- submit forum -->
-            <input type="submit" value="Submit Edit {{ puzzle.name }}" class="btn edit">
-            
-            <!-- Go Back to puzzle button. -->
-            <a href="/puzzle/{{puzzle.id}}" class="btn">Go Back</a>
-        </div>
-    </form>
-</div>
+<!-- Edit form that display the info you have for your question and answer and lets you change them. -->
+<form action="/puzzle/{{puzzle._id}}?_method=PUT" method="POST">
+    <fieldset>
+        <legend>{{puzzle.problem}}</legend>
+        <label class="form-label">Question:</label>
+        <input 
+            type="text" 
+            name="problem" 
+            placeholder="enter name" 
+            class="form-control"
+            value="{{puzzle.problem}}"
+        >
+        <input 
+            type="text" 
+            name="answer" 
+            placeholder="enter name" 
+            class="form-control"
+            value="{{puzzle.answer}}"
+        >
+        <label class="form-label">public</label>
+        <input 
+            type="checkbox" 
+            name="public" 
+            class="form-check-input"
+            {% if puzzle.public %} 
+                checked
+            {% endif %}
+        >
+    </fieldset>
+    <!-- Buttons under the forum -->
+    <div class="btn-group">
+        <!-- submit forum -->
+        <input type="submit" value="Submit Edit {{ puzzle.name }}" class="btn edit">
+        
+        <!-- Go Back to puzzle button. -->
+        <a href="/puzzle/{{puzzle.id}}" class="btn">Go Back</a>
+    </div>
+</form>
 {% endblock %}

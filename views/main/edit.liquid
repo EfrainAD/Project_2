@@ -1,7 +1,7 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 
 {% block content %}
-<div class="container-md main-edit-page">
+<div class="main-edit-page">
     <!-- Edit form that display the info you have for your question and answer and lets you change them. -->
     <form action="/main/{{tracker._id}}?_method=PUT/edit" method="POST">
         <fieldset>

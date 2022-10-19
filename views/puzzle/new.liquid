@@ -1,7 +1,6 @@
 {% layout 'layout.liquid' %} {% block content %}
 
 {% if loggedIn == true %} <!-- Check if user Signed in -->
-<div class="container-md">
      <!-- forum to make your new question/answer -->
      <form action="/puzzle" method="POST">
           <fieldset>
@@ -41,7 +40,6 @@
           value="Create New Problem" 
           class="btn btn-success"
           >
-     </form>
 </div>
 
 {% else %}

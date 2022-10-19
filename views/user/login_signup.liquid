@@ -1,35 +1,9 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
 
-<div class="container-md">
-     <form action="/user/login" method="POST">
-         <fieldset>
-             <legend>Welcome back, please log in here</legend>
-             <label class="form-label">Username:</label>
-             <input 
-                 type="text" 
-                 name="username" 
-                 class="form-control"
-             >
-             <label class="form-label">Password:</label>
-             <input 
-                 type="password" 
-                 name="password" 
-                 class="form-control"
-             >
-         </fieldset>
-         <input 
-             type="submit"
-             value="Log In" 
-             class="btn btn-success"
-         >
-     </form>
- </div>
-
-<div class="container-md">
-    <form action="/user/signup" method="POST">
+    <form action="/user/login" method="POST">
         <fieldset>
-            <legend>New User</legend>
+            <legend>Welcome back, please log in here</legend>
             <label class="form-label">Username:</label>
             <input 
                 type="text" 
@@ -44,12 +18,32 @@
             >
         </fieldset>
         <input 
-            type="submit" 
-            value="Create Account" 
+            type="submit"
+            value="Log In" 
             class="btn btn-success"
         >
     </form>
-</div>
 
+<form action="/user/signup" method="POST">
+    <fieldset>
+        <legend>New User</legend>
+        <label class="form-label">Username:</label>
+        <input 
+            type="text" 
+            name="username" 
+            class="form-control"
+        >
+        <label class="form-label">Password:</label>
+        <input 
+            type="password" 
+            name="password" 
+            class="form-control"
+        >
+    </fieldset>
+    <input 
+        type="submit" 
+        value="Create Account" 
+        class="btn btn-success"
+    >
+</form>
 {% endblock %}
-
