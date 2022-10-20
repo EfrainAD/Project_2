@@ -82,7 +82,7 @@ router.get('/:trackerId/edit', async (req, res) => {
      const tracker = thisUser.personalTracker.find(tracker => {
           return tracker.id === trackerId
      })
-
+     console.log('TRACKER DUEDATE: ', tracker.dueDate)
      if (tracker) 
           res.render('main/edit', {tracker, loggedIn})
      else 

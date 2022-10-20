@@ -10,12 +10,15 @@
             <div class="center">
                 <label class="form-label">dueDate</label>
                 <input 
-                    type="text" 
-                    {%- comment -%} type="datetime-local"  {%- endcomment -%}
+                    //{%- comment -%} type="text"  {%- endcomment -%}
+                    type="datetime-local" 
                     name="dueDate" 
                     placeholder="enter due date" 
-                    value="{{tracker.dueDate}}"
+                    value="{{tracker.dueDate | date: '%Y-%m-%dT%H:%M'}}"
                 >
+                {%- comment -%} //value="2018-06-12T19:30"
+                //value="{{tracker.dueDate}}"
+                //value="{{new}}" {%- endcomment -%}
             </div>
             <p>This is the varible that conrols how many days the problem will go up the next time you click right. (Gets larger with every time you clicked that you got it right.)</p>
             <div class="center">
