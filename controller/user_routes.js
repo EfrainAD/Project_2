@@ -160,21 +160,6 @@ router.post('/tracker/:puzzleId', async (req, res) => {
 // Checks to see if the puzzle is not in this collection already.
 // Return true/false
 const isNotThere = (collection, puzzle) => {
-    // console.log('collection puzzle', collection)
-    // console.log('passed puzzle', puzzle)
-    // collection.puzzle.forEach(colPuzzle => {
-    //     console.log(`Question: ${colPuzzle.problem} === ${puzzle.problem}`)
-    //     console.log(`Answer: ${colPuzzle.answer} === ${puzzle.answer}`)
-    //     console.log('collection puzzle', colPuzzle.problem)
-    //     console.log('passed puzzle', puzzle.problem)
-    //     console.log('')
-    //     if (colPuzzle.problem === puzzle.problem) 
-    //         console.log('YYYYYYYOOU PASSSSSS\n\n')
-    //         if (colPuzzle.answer === puzzle.answer) {
-    //             console.log('YYYYYYYOOU PASSSSSS\n\n')
-    //             return false
-    //         }
-    // })
     if (collection.puzzle.find(colPuzzle => {
         return colPuzzle.problem === puzzle.problem &&
                   colPuzzle.answer === puzzle.answer
