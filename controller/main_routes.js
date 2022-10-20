@@ -111,15 +111,9 @@ router.get('/:id', async (req, res) => {
 
      // Get the Personal tracker
      const tracker = await PersonalTracker.findById(trackerId)
-     .populate('origin') // This is the puzzle_id. I need this to get the owner of it so I can display the owner name of the problem.)
      .populate('collections') // This will be used to display the collection the problem belongs to.
 
-     // Getting "origin" so I can .poplulate again to get the owner's username of the puzzle.
-     const puzzle = await Puzzle.findById(tracker.origin)
-     .populate('owner')
-     const username = puzzle.owner.username
-
-     res.render('main/show', {tracker, username, loggedIn})
+     res.render('main/show', {tracker, loggedIn})
 })
 
 // DELETE - Delete a problem due, but not the problem it's self.
