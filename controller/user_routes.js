@@ -157,6 +157,31 @@ router.post('/tracker/:puzzleId', async (req, res) => {
     res.redirect('/user')
 })
 
+// Checks to see if the puzzle is not in this collection already.
+// Return true/false
+const isNotThere = (collection, puzzle) => {
+    // console.log('collection puzzle', collection)
+    // console.log('passed puzzle', puzzle)
+    // collection.puzzle.forEach(colPuzzle => {
+    //     console.log(`Question: ${colPuzzle.problem} === ${puzzle.problem}`)
+    //     console.log(`Answer: ${colPuzzle.answer} === ${puzzle.answer}`)
+    //     console.log('collection puzzle', colPuzzle.problem)
+    //     console.log('passed puzzle', puzzle.problem)
+    //     console.log('')
+    //     if (colPuzzle.problem === puzzle.problem) 
+    //         console.log('YYYYYYYOOU PASSSSSS\n\n')
+    //         if (colPuzzle.answer === puzzle.answer) {
+    //             console.log('YYYYYYYOOU PASSSSSS\n\n')
+    //             return false
+    //         }
+    // })
+    if (collection.puzzle.find(colPuzzle => {
+        return colPuzzle.problem === puzzle.problem &&
+                  colPuzzle.answer === puzzle.answer
+    }))
+        return false
+    return true
+}
 // Grab all puzzles from the collection and to personal counter.
 router.post('/:collectionId', async (req, res) => {
     console.log("Running: router.post('/:collectionId'")
@@ -165,29 +190,34 @@ router.post('/:collectionId', async (req, res) => {
     const newCollectionName = req.body.userCollection // Name of the collection to be made for the user if he already doesnt have it.(Comes from the forum.) 
     
     // Grab any collection the user has with the same name as "newCollectionName" that was gottone from req.body
-    const collectionIfExists = await Collection.findOne({owner: userId, name: newCollectionName})
+    const collectionIfExists = await Collection.findOne({owner: userId, name: newCollectionName}).populate('puzzle')
     
     // if user doesn't have a collection by that name, make one.
+    let newCollection
     if (!collectionIfExists) { 
-        const newCollection = await Collection.create({owner: userId, name: newCollectionName})
-        const sourceCollection = await Collection.findById(puzzleSourceCollectionId)
-        .populate('owner')
-        .populate('puzzle')
-        
-        // Check if aultherrized
-        if ((sourceCollection.public === true) || (userId == sourceCollection.owner.id) ) {
-            // Grab all puzzles from the collection and update to the new colleciton
-            for (let i = 0; i < sourceCollection.puzzle.length; i++) {
-                if (sourceCollection.puzzle[i].public) {                  
-                    Collection.findByIdAndUpdate({_id: newCollection._id}, {$push: {puzzle: sourceCollection.puzzle[i]}},{new: true},function (err,model){
-                        if (err) {
-                            console.log(err)
-                        }
-                        console.log('model: updated courceCollection', model)
-                    })
+        newCollection = await Collection.create({owner: userId, name: newCollectionName})
+    } else {
+        newCollection = collectionIfExists
+    }
 
-                    // Copy problem from other users collection and add that to the users personalTracker (That will give the due date for when it is due.)
-                    Collection.findById(newCollection._id)
+    const sourceCollection = await Collection.findById(puzzleSourceCollectionId)
+    .populate('owner')
+    .populate('puzzle')
+    
+    // Check if aultherrized
+    if ((sourceCollection.public === true) || (userId == sourceCollection.owner.id) ) {
+        // Grab all public puzzles from the collection and update to the new colleciton
+        for (let i = 0; i < sourceCollection.puzzle.length; i++) {
+            if (sourceCollection.puzzle[i].public && isNotThere(newCollection, sourceCollection.puzzle[i])) {      
+                Collection.findByIdAndUpdate({_id: newCollection._id}, {$push: {puzzle: sourceCollection.puzzle[i]}},{new: true},function (err,model){
+                    if (err) {
+                        console.log(err)
+                    }
+                    console.log('model: updated courceCollection', model)
+                })
+
+                // Copy problem from other users collection and add that to the users personalTracker (That will give the due date for when it is due.)
+                Collection.findById(newCollection._id)
                     .then(async collection => {
                         console.log('This is the new Collection',collection)
                         // The body for the creation
@@ -198,12 +228,11 @@ router.post('/:collectionId', async (req, res) => {
                             answer: sourceCollection.puzzle[i].answer ,
                             problem: sourceCollection.puzzle[i].problem
                         }
-                        console.log('This is the body before it is passed', puzzleBody)
                         // create the puzzle
                         const newPuzzle = await Puzzle.create(puzzleBody)
                         console.log('New puzzle just created: ', newPuzzle)
 
-                        const body = {
+                        const personalTrackerBody = {
                             origin: newPuzzle.id,
                             collections: [newCollection.id], 
                             problem: newPuzzle.problem,
@@ -211,20 +240,19 @@ router.post('/:collectionId', async (req, res) => {
                             dueDate: Date.now(),
                             dayJumper: 0
                         }
-                        const newTracker = await PersonalTracker.create(body)
+                        const newTracker = await PersonalTracker.create(personalTrackerBody)
                         
                         // Add new personal tracker to the user.
                         userUpdated = await User.findByIdAndUpdate({_id: userId}, {$push: {personalTracker: newTracker.id}},{new: true})
                     })
-                    
-                    // User.findById(userId).populate('personalTracker')
-                }
+                
+                // User.findById(userId).populate('personalTracker')
             }
         }
-        else {
-            res.render('user/accessDenied', {loggedIn})
-        }
-    } 
+    }
+    else {
+        res.render('user/accessDenied', {loggedIn})
+    }
     res.redirect('/user') 
 })
 
