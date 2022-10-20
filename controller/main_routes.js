@@ -82,13 +82,28 @@ router.get('/:trackerId/edit', async (req, res) => {
      const tracker = thisUser.personalTracker.find(tracker => {
           return tracker.id === trackerId
      })
-     console.log('TRACKER DUEDATE: ', tracker.dueDate)
      if (tracker) 
           res.render('main/edit', {tracker, loggedIn})
      else 
           res.render('user/accessDenied')
  })
-
+//NOTPage: Edit the Personal Tracker
+router.put('/:trackerId', async (req, res) => {
+     const {userId, loggedIn} = req.session
+     const trackerId = req.params.trackerId
+     
+     const tracker = await PersonalTracker.findById(trackerId).populate('origin')
+     console.log(`${userId} == ${tracker.origin.owner}`)
+     if (userId == tracker.origin.owner) {
+          // const 
+          console.log(req.body)
+          PersonalTracker.findByIdAndUpdate(tracker.id, req.body, { new: true })
+                    .then(tracker => {
+                         res.redirect(`/main/${tracker.id}`)})
+     } else {
+          res.render('user/accessDenied', {loggedIn}) 
+     }
+ })
 // Show page for personal tracker as well as options
 router.get('/:id', async (req, res) => {
      const trackerId = req.params.id

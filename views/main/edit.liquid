@@ -3,29 +3,25 @@
 {% block content %}
 <div class="main-edit-page">
     <!-- Edit form that display the info you have for your question and answer and lets you change them. -->
-    <form action="/main/{{tracker._id}}?_method=PUT/edit" method="POST">
+    <form action="/main/{{tracker._id}}?_method=PUT" method="POST">
         <fieldset>
             <legend class="center">{{tracker.problem}}</legend>
             <p>This is the next day that you will see this problem again</p>
             <div class="center">
                 <label class="form-label">dueDate</label>
                 <input 
-                    //{%- comment -%} type="text"  {%- endcomment -%}
                     type="datetime-local" 
                     name="dueDate" 
                     placeholder="enter due date" 
                     value="{{tracker.dueDate | date: '%Y-%m-%dT%H:%M'}}"
                 >
-                {%- comment -%} //value="2018-06-12T19:30"
-                //value="{{tracker.dueDate}}"
-                //value="{{new}}" {%- endcomment -%}
             </div>
             <p>This is the varible that conrols how many days the problem will go up the next time you click right. (Gets larger with every time you clicked that you got it right.)</p>
             <div class="center">
                 <label class="form-label">Days Interval</label>
                 <input 
                     type="number" 
-                    name="Days" 
+                    name="dayJumper" 
                     placeholder="enter day jumper" 
                     value="{{tracker.dayJumper}}"
                 >
