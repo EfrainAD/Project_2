@@ -150,6 +150,13 @@ legend {
      margin-left: 1rem;
      font-size: 0.8rem;
 }
+.form-block {
+     margin-top: 3rem;
+     margin-bottom: 3rem;
+}
+.form-block * {
+     display: block;
+}
 .form-row {
      margin-top: 4rem;
      margin-bottom: 0.7rem;

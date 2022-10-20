@@ -1,14 +1,14 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
 
-    <form action="/user/login" method="POST">
+    <form action="/user/login" method="POST" class="form-block">
         <fieldset>
             <legend>Welcome back, please log in here</legend>
             <label class="form-label">Username:</label>
             <input 
                 type="text" 
                 name="username" 
-            ><br>
+            >
             <label class="form-label">Password:</label>
             <input 
                 type="password" 
@@ -22,14 +22,14 @@
         >
     </form>
 
-<form action="/user/signup" method="POST">
+<form action="/user/signup" method="POST" class="form-block">
     <fieldset>
         <legend>New User</legend>
         <label class="form-label">Username:</label>
         <input 
             type="text" 
             name="username" 
-        ><br>
+        >
         <label class="form-label">Password:</label>
         <input 
             type="password" 
