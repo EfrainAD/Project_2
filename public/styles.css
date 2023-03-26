@@ -11,7 +11,6 @@
 }
 body {
      background: cadetblue;
-     color: #FA6121;
 }
 legend {
     line-height: 90%;
@@ -211,6 +210,7 @@ legend {
      height: 15rem;
      perspective: 500;
      margin: 3rem auto;
+     touch-action: manipulation;
 }
 .card {
      position: relative;
@@ -221,8 +221,9 @@ legend {
      transition: transform 2s;
      transform-style: preserve-3d;
      border: none;
+     cursor: pointer;
 }
-.card-platform:hover .card {
+.card-platform:hover .card, .card:focus-within {
      transform: rotateY(180deg);
 }
 .card-front, .card-back {
