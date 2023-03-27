@@ -45,10 +45,6 @@ body a {
      align-items: center;
      margin: 1rem 0;
 }
-/* .add, .edit, .delete {
-     
-} */
-
 .add,
 .edit,
 .delete,
@@ -204,46 +200,60 @@ legend {
 .margin-top {
      margin-top: 1rem;
 }
-/* card */
-.card-platform {
+/* CARD */
+.card-container {
      width: 25rem;
      height: 15rem;
-     perspective: 500;
+     padding: 2rem;
      margin: 3rem auto;
-     touch-action: manipulation;
+     -webkit-perspective: 1000px; /* for Safari and Chrome */
+     perspective: 1000px;
 }
-.card {
+.card-inner {
      position: relative;
      width: 100%;
      height: 100%;
-     text-align: center;
-     font-weight: 900;
+     -webkit-transition: -webkit-transform 1s; /* for Safari and Chrome */
+     -webkit-transform-style: preserve-3d; /* for Safari and Chrome */
      transition: transform 2s;
      transform-style: preserve-3d;
-     border: none;
      cursor: pointer;
 }
-.card-platform:hover .card, .card:focus-within {
+.card-inner.is-flipped {
      transform: rotateY(180deg);
 }
-.card-front, .card-back {
+.card-face {
      position: absolute;
      width: 100%;
      height: 100%;
      background: #627894;
      color: #DBE8F9;
      box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.4);
+     -webkit-backface-visibility: hidden; /* for Safari and Chrome */
      backface-visibility: hidden;
 }
+.card-front {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+}
 .card-back {
+     display: flex;
+     align-items: center;
+     justify-content: center;
      transform: rotateY(180deg);
 }
 .card-content {
-     position: relative;
      font-size: 2rem;
      font-weight: bolder;
-     top: 30%;
 }
+   
+   
+
+
+
+
+
 .main-home-page {
      text-align: center;
 }

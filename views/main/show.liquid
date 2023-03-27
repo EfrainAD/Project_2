@@ -1,13 +1,13 @@
 {% layout 'layout.liquid', loggedIn: loggedIn %}
 {% block content %}
 <!-- Flash Card -->
-<div class="card-platform">
-    <div class="card">
-        <div class="card-front">
-            <p class="card-content">{{tracker.problem}}</p>
+<div class="card-container">
+    <div class="card-inner">
+        <div class="card-face card-front">
+            <div class="card-content">{{tracker.problem}}</div>
         </div>
-        <div class="card-back">
-            <p class="card-content">{{tracker.answer}}</p>
+        <div class="card-face card-back">
+            <div class="card-content">{{tracker.answer}}</div>
         </div>
     </div>
 </div>

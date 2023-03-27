@@ -3,16 +3,16 @@
 <div class="center">
     <main>
         <!-- Flash Card -->
-        <div class="card-platform">
-                <div class="card">
-                    <div class="card-front">
-                        <p class="card-content">{{puzzle.problem}}</p>
-                    </div>
-                    <div class="card-back">
-                        <p class="card-content">{{puzzle.answer}}</p>
-                    </div>
+        <div class="card-container">
+            <div class="card-inner">
+                <div class="card-face card-front">
+                    <div class="card-content">{{puzzle.problem}}</div>
+                </div>
+                <div class="card-face card-back">
+                    <div class="card-content">{{puzzle.answer}}</div>
                 </div>
             </div>
+        </div>
     </main>
     {% for collection in puzzle.collections %}
         <h4>Collection: <a href="/collection/{{collection.id}}">{{collection.name}}</a></h4>

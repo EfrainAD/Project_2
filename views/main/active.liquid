@@ -10,16 +10,16 @@
      <!-- Ask the question -->
      
      <!-- Flash Card -->
-     <div class="card-platform">
-          <div class="card">
-          <div class="card-front">
-               <p class="card-content">{{dueProblem.problem}}</p>
+     <div class="card-container">
+          <div class="card-inner">
+              <div class="card-face card-front">
+                    <div class="card-content">{{dueProblem.problem}}</div>
+              </div>
+              <div class="card-face card-back">
+                    <div class="card-content">{{dueProblem.answer}}</div>
+              </div>
           </div>
-          <div class="card-back">
-               <p class="card-content">{{dueProblem.answer}}</p>
-          </div>
-          </div>
-     </div>
+      </div>
      <!-- Mark the answer right or wrong -->
      <div class="right-wrong-grouped">
           <a href="/main/{{dueProblem.id}}/right" class="btn btn-primary right">Right</a><a href="/main/{{dueProblem.id}}/wrong" class="btn btn-danger wrong">Wrong</a>
