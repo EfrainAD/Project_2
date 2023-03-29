@@ -202,7 +202,7 @@ legend {
 }
 /* CARD */
 .card-container {
-     width: 25rem;
+     width: 30rem;
      height: 15rem;
      padding: 2rem;
      margin: 3rem auto;
@@ -226,6 +226,9 @@ legend {
      position: absolute;
      width: 100%;
      height: 100%;
+     min-height: 100%; 
+     height: auto;
+     padding: 1.5rem;
      background: #627894;
      color: #DBE8F9;
      box-shadow: 4px 4px 5px 1px rgba(0, 0, 0, 0.4);
@@ -236,6 +239,7 @@ legend {
      display: flex;
      align-items: center;
      justify-content: center;
+     font-weight: bolder;
 }
 .card-back {
      display: flex;
@@ -244,8 +248,7 @@ legend {
      transform: rotateY(180deg);
 }
 .card-content {
-     font-size: 2rem;
-     font-weight: bolder;
+     font-size: 1.4rem;
 }
    
    
